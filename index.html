@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Načítání obsahu…</title>
+
+  <!-- Text pro uživatele -->
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; }
+    .ad { margin: 20px auto; width: 300px; height: 250px; background-color: #f0f0f0; }
+    .timer { font-size: 24px; margin-top: 20px; }
+  </style>
+
+  <!-- Timer a redirect -->
+  <script>
+    let seconds = 10;
+    function countdown() {
+      document.getElementById('timer').innerText = seconds;
+      if (seconds === 0) {
+        const params = new URLSearchParams(window.location.search);
+        const url = params.get('url') || 'https://example.com';
+        window.location.href = url;
+      } else {
+        seconds--;
+        setTimeout(countdown, 1000);
+      }
+    }
+    window.onload = countdown;
+  </script>
+</head>
+<body>
+  <h2>Obsah se načítá…</h2>
+  <p>Za <span id="timer">10</span> sekund budete přesměrováni na fotku</p>
+
+  <!-- Místo pro reklamy -->
+  <div class="ad">
+    <!-- Zde vložíš reklamní kód od sítě (Adsterra/PropellerAds) -->
+    REKLAMA
+  </div>
+
+  <!-- Přímý link pro rychlé přesměrování -->
+  <p><a href="#" onclick="window.location.href=new URLSearchParams(window.location.search).get('url')">Přejít hned</a></p>
+</body>
+</html>
