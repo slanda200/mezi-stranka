@@ -7,10 +7,12 @@
   <style>
     body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
     h1 { font-size: 40px; margin-bottom: 50px; }
-    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; } /* Menší gap pro víc fotek na řádek */
-    .item { width: 90px; } /* Poloviční velikost (původně 180px) – uprav na 100px nebo 120px, jak chceš */
-    img { width: 100%; border-radius: 10px; box-shadow: 0 0 15px #000; }
-    .name { font-size: 14px; margin-top: 5px; color: #00aaff; } /* Menší text pod fotkou */
+    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+    .item { width: 90px; position: relative; display: inline-block; } /* Poloviční velikost + pozice pro překryv */
+    img { width: 100%; border-radius: 10px; filter: blur(12px); } /* Blur efekt – uprav 12px na 8–15px podle síly */
+    .overlay-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                    font-size: 16px; color: white; background: rgba(0,0,0,0.7); padding: 8px 16px; border-radius: 8px; }
+    .name { font-size: 14px; margin-top: 5px; color: #00aaff; }
     a { text-decoration: none; }
     .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
     .ad-banner { height: 250px; background: #222; margin: 50px auto; max-width: 728px; padding: 20px; border-radius: 10px; }
@@ -66,7 +68,7 @@
     // Zobrazení jména
     document.getElementById('postava-name').textContent = id + ' - Vyber fotku';
 
-    // Generování galerie
+    // Generování galerie s blur efektem
     const gallery = document.getElementById('gallery');
     const postavaFotky = data[id] || [];
 
@@ -75,8 +77,11 @@
       item.className = 'item';
       item.innerHTML = `
         <a href="redirect.html?url=${encodeURIComponent(f.full)}">
-          <img src="${f.thumb}" alt="Fotka">
-          <div class="name">Klikni pro full</div>
+          <div style="position: relative; display: inline-block;">
+            <img src="${f.thumb}" alt="Fotka">
+            <div class="overlay-text">Klikni pro full 😈</div>
+          </div>
+          <div class="name">Full verze</div>
         </a>
       `;
       gallery.appendChild(item);
