@@ -1,5 +1,6 @@
 # CZ/SK postavy
 nasta.theruss
 kafuu
+veronicafoxova
 
 # Worldwide postavy
