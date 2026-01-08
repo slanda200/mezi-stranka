@@ -13,19 +13,19 @@
     .name { font-size: 24px; color: #00aaff; }
     a { text-decoration: none; }
     .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
-   .ad-banner { 
-  margin: 50px auto; 
-  width: 100%; 
-  max-width: 970px; /* Max pro desktop */
-  min-height: 90px; /* Min pro načtení */
-  text-align: center; 
-  background: #222; 
-  border-radius: 10px; 
-  padding: 10px; 
-}
-@media (max-width: 768px) { 
-  .ad-banner { min-height: 250px; } /* Pro mobile banner */
-}
+    .ad-banner {
+      margin: 50px auto;
+      width: 100%;
+      max-width: 970px;
+      min-height: 90px;
+      text-align: center;
+      background: #222;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    @media (max-width: 768px) {
+      .ad-banner { min-height: 250px; }
+    }
   </style>
 
   <!-- Adsterra reklamy -->
@@ -37,26 +37,18 @@
   
   <h1>QuickPic - Vyber si</h1>
 
-  <div class="ad-banner"><script>
-  atOptions = {
-    'key' : 'ba98edaa676bad0b73c214996706b39b',
-    'format' : 'iframe',
-    'height' : 90,
-    'width' : 728,
-    'params' : {}
-  };
+  <div class="ad-banner">
+    <!-- Tvé banner kódy sem (jako dřív) -->
     <script>
-  atOptions = {
-    'key' : '2b2844954e2220b902ad439f350a7388',
-    'format' : 'iframe',
-    'height' : 250,
-    'width' : 300,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script>
-</script>
-<script src="https://www.highperformanceformat.com/ba98edaa676bad0b73c214996706b39b/invoke.js"></script></div>
+      atOptions = { 'key' : 'ba98edaa676bad0b73c214996706b39b', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/ba98edaa676bad0b73c214996706b39b/invoke.js"></script>
+    
+    <script>
+      atOptions = { 'key' : '2b2844954e2220b902ad439f350a7388', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script>
+  </div>
 
   <h2>CZ/SK</h2>
   <div class="gallery" id="czsk-gallery"></div>
@@ -64,35 +56,30 @@
   <h2>Worldwide</h2>
   <div class="gallery" id="worldwide-gallery"></div>
 
-  <div class="ad-banner"><script>
-  atOptions = {
-    'key' : 'c64f8c58bfec8d551e2ac3bbae2841eb',
-    'format' : 'iframe',
-    'height' : 300,
-    'width' : 160,
-    'params' : {}
-  };
+  <div class="ad-banner">
+    <!-- Tvé dolní banner kódy sem -->
     <script>
-  atOptions = {
-    'key' : '2b2844954e2220b902ad439f350a7388',
-    'format' : 'iframe',
-    'height' : 250,
-    'width' : 300,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script>
-</script>
-<script src="https://www.highperformanceformat.com/c64f8c58bfec8d551e2ac3bbae2841eb/invoke.js"></script>
-</script>
-<script src="https://www.highperformanceformat.com/ba98edaa676bad0b73c214996706b39b/invoke.js"></script></div>
+      atOptions = { 'key' : 'ba98edaa676bad0b73c214996706b39b', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/ba98edaa676bad0b73c214996706b39b/invoke.js"></script>
+    
+    <script>
+      atOptions = { 'key' : 'c64f8c58bfec8d551e2ac3bbae2841eb', 'format' : 'iframe', 'height' : 300, 'width' : 160, 'params' : {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/c64f8c58bfec8d551e2ac3bbae2841eb/invoke.js"></script>
+    
+    <script>
+      atOptions = { 'key' : '2b2844954e2220b902ad439f350a7388', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+    </script>
+    <script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script>
+  </div>
 
   <script>
     fetch('postavy/list.txt')
       .then(response => response.text())
       .then(text => {
         const lines = text.split('\n');
-        let currentSection = 'czsk'; // start v CZ/SK
+        let currentSection = 'czsk';
         const czsk = [];
         const worldwide = [];
 
@@ -111,21 +98,21 @@
           }
         });
 
-        // Generuj CZ/SK
+        // Generuj CZ/SK s novým tabem
         const czskGallery = document.getElementById('czsk-gallery');
         czsk.forEach(id => {
           const item = document.createElement('div');
           item.className = 'item';
-          item.innerHTML = `<a href="gallery.html?id=${id}"><div class="name">${id}</div></a>`;
+          item.innerHTML = `<a href="gallery.html?id=${id}" target="_blank" rel="noopener"><div class="name">${id}</div></a>`;
           czskGallery.appendChild(item);
         });
 
-        // Generuj Worldwide
+        // Generuj Worldwide s novým tabem
         const worldwideGallery = document.getElementById('worldwide-gallery');
         worldwide.forEach(id => {
           const item = document.createElement('div');
           item.className = 'item';
-          item.innerHTML = `<a href="gallery.html?id=${id}"><div class="name">${id}</div></a>`;
+          item.innerHTML = `<a href="gallery.html?id=${id}" target="_blank" rel="noopener"><div class="name">${id}</div></a>`;
           worldwideGallery.appendChild(item);
         });
       });
