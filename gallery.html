@@ -13,7 +13,19 @@
     .name { font-size: 14px; margin-top: 5px; color: #00aaff; }
     a { text-decoration: none; }
     .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
-    .ad-banner { height: 250px; background: #222; margin: 50px auto; max-width: 728px; padding: 20px; border-radius: 10px; }
+   .ad-banner { 
+  margin: 50px auto; 
+  width: 100%; 
+  max-width: 970px; /* Max pro desktop */
+  min-height: 90px; /* Min pro načtení */
+  text-align: center; 
+  background: #222; 
+  border-radius: 10px; 
+  padding: 10px; 
+}
+@media (max-width: 768px) { 
+  .ad-banner { min-height: 250px; } /* Pro mobile banner */
+}
   </style>
 
   <!-- Adsterra reklamy -->
