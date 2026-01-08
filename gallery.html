@@ -9,78 +9,69 @@
     h1 { font-size: 40px; margin-bottom: 50px; }
     .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
     .item { width: 90px; }
-    img { width: 100%; border-radius: 10px; filter: blur(5px); box-shadow: 0 0 15px #000; } /* Jemnější blur (8px) */
+    img { width: 100%; border-radius: 10px; filter: blur(5px); box-shadow: 0 0 15px #000; }
     .name { font-size: 14px; margin-top: 5px; color: #00aaff; }
     a { text-decoration: none; }
     .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
     .ad-banner { height: 250px; background: #222; margin: 50px auto; max-width: 728px; padding: 20px; border-radius: 10px; }
   </style>
 
-  <!-- Adsterra Popunder + Social Bar (na load galerie) -->
+  <!-- Adsterra reklamy -->
   <script src="https://pl28425577.effectivegatecpm.com/4f/89/ba/4f89ba60d95eef4726d4bbdcecfa2661.js"></script>
   <script src="https://pl28425676.effectivegatecpm.com/c7/cc/46/c7cc46df83dd7e3ce8d448ad01095fdb.js"></script>
   <script>
-    atOptions = {
-      'key' : '2d3bdd7a876dc6ad8431008f56a1488d',
-      'format' : 'iframe',
-      'height' : 600,
-      'width' : 160,
-      'params' : {}
-    };
+    atOptions = { 'key' : '2d3bdd7a876dc6ad8431008f56a1488d', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
   </script>
   <script src="https://www.highperformanceformat.com/2d3bdd7a876dc6ad8431008f56a1488d/invoke.js"></script>
 </head>
 <body>
   <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
   
-  <h1 id="postava-name">Galerie postavy...</h1>
+  <h1 id="postava-name">Načítání galerie...</h1>
   
-  <!-- Reklama nahoře -->
-  <div class="ad-banner">
-    Reklama
-  </div>
+  <div class="ad-banner">Reklama</div>
   
   <div class="gallery" id="gallery"></div>
   
-  <!-- Reklama dole -->
-  <div class="ad-banner">
-    Reklama
-  </div>
+  <div class="ad-banner">Reklama</div>
   
   <a href="index.html">Zpět na výběr</a>
 
   <script>
-    // Data fotek pro každou postavu (přidej své)
-    const data = {
-      'nasta.theruss': [
-        { thumb: 'https://simp4.selti-delivery.ru/IMG_4858b25ebaff896c52f6.th.jpg', full: 'https://simp4.selti-delivery.ru/IMG_4858b25ebaff896c52f6.jpg' },
-        // Přidej další fotky pro nasta.theruss
-      ],
-      // Přidej další postavy
-    };
-
-    // Získání ID postavy z URL (?id=nasta.theruss)
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('id') || 'nasta.theruss';
+    const id = params.get('id') || 'nasta.theruss'; // default postava
 
-    // Zobrazení jména
-    document.getElementById('postava-name').textContent = id + ' - Vyber fotku';
+    document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
 
-    // Generování galerie s jemným blur
-    const gallery = document.getElementById('gallery');
-    const postavaFotky = data[id] || [];
+    // Načtení textového souboru s odkazy
+    fetch(`postavy/${id}.txt`)
+      .then(response => response.text())
+      .then(text => {
+        const lines = text.trim().split('\n');
+        const gallery = document.getElementById('gallery');
 
-    postavaFotky.forEach(f => {
-      const item = document.createElement('div');
-      item.className = 'item';
-      item.innerHTML = `
-        <a href="redirect.html?url=${encodeURIComponent(f.full)}">
-          <img src="${f.thumb}" alt="Fotka">
-          <div class="name">Klikni pro full verzi</div>
-        </a>
-      `;
-      gallery.appendChild(item);
-    });
+        for (let i = 0; i < lines.length; i += 2) {
+          const thumb = lines[i].trim();
+          const full = lines[i + 1].trim();
+          
+          if (thumb && full) {
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.innerHTML = `
+              <a href="redirect.html?url=${encodeURIComponent(full)}">
+                <img src="${thumb}" alt="Fotka">
+                <div class="name">Klikni pro full</div>
+              </a>
+            `;
+            gallery.appendChild(item);
+          }
+        }
+
+        document.getElementById('postava-name').textContent = id + ' - ' + (lines.length / 2) + ' fotek';
+      })
+      .catch(err => {
+        document.getElementById('postava-name').textContent = 'Postava nenalezena';
+      });
   </script>
 </body>
 </html>
