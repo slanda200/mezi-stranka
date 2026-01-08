@@ -3,81 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QuickPic - Hot NSFW Pics (18+)</title>
+  <title>QuickPic - Vyber postavu (18+)</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
-    h1 { font-size: 40px; margin-bottom: 50px; }
-    .section { margin: 50px 0; }
+    /* Stejný styl jako dřív */
+    body { background: #111; color: #fff; text-align: center; padding: 40px; }
+    h1 { font-size: 40px; }
     h2 { font-size: 32px; color: #ff4444; }
-    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 30px; }
+    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
     .item { width: 200px; }
-    img { width: 100%; border-radius: 10px; box-shadow: 0 0 10px #000; }
+    img { width: 100%; border-radius: 10px; }
     .name { font-size: 20px; margin-top: 10px; }
-    a { color: #00aaff; text-decoration: none; }
-    .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
-    .ad-banner { height: 250px; background: #222; margin: 40px auto; max-width: 728px; padding: 20px; } /* Banner reklama mezi sekcemi */
+    a { text-decoration: none; color: #00aaff; }
+    .warning { color: #ff6666; margin-bottom: 40px; }
   </style>
 
-  <!-- Adsterra Popunder + Social Bar (na load celého menu) -->
+  <!-- Adsterra reklamy na menu -->
   <script src="https://pl28425577.effectivegatecpm.com/4f/89/ba/4f89ba60d95eef4726d4bbdcecfa2661.js"></script>
   <script src="https://pl28425676.effectivegatecpm.com/c7/cc/46/c7cc46df83dd7e3ce8d448ad01095fdb.js"></script>
 </head>
 <body>
-  <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
+  <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé.</div>
   
-  <h1>QuickPic - Vyber postavu</h1>
+  <h1>Vyber postavu</h1>
 
-  <!-- Reklama mezi sekcemi -->
-  <div class="ad-banner">
-    <!-- Sem vlož Adsterra banner kód, pokud máš -->
-    Reklama
-  </div>
-
-  <!-- Sekce CZ/SK -->
-  <div class="section">
-    <h2>CZ/SK Postavy</h2>
-    <div class="gallery">
-      <!-- Příklad CZ/SK postavy -->
-      <div class="item">
-        <a href="redirect.html?url=https://tvoje-plna-fotka-cz1.jpg">
-          <img src="https://thumbnail-cz1-m.jpg" alt="CZ Girl 1"> <!-- thumbnail odkaz (Imgur s 'm') -->
-          <div class="name">Tereza (CZ)</div>
-        </a>
-      </div>
-      <div class="item">
-        <a href="redirect.html?url=https://tvoje-plna-fotka-sk1.jpg">
-          <img src="https://thumbnail-sk1-m.jpg" alt="SK Beauty">
-          <div class="name">Lucie (SK)</div>
-        </a>
-      </div>
-      <!-- Přidej víc CZ/SK postav – kopíruj div.item -->
+  <h2>CZ/SK Postavy</h2>
+  <div class="gallery">
+    <div class="item">
+      <a href="gallery.html?id=tereza">
+        <img src="tereza-thumbnail.jpg" alt="Tereza">
+        <div class="name">Tereza (CZ) - 50 fotek</div>
+      </a>
     </div>
-  </div>
-
-  <!-- Sekce Worldwide -->
-  <div class="section">
-    <h2>Worldwide Postavy</h2>
-    <div class="gallery">
-      <!-- Příklad worldwide -->
-      <div class="item">
-        <a href="redirect.html?url=https://tvoje-plna-fotka-world1.jpg">
-          <img src="https://thumbnail-world1-m.jpg" alt="International Hot">
-          <div class="name">Emma (US)</div>
-        </a>
-      </div>
-      <div class="item">
-        <a href="redirect.html?url=https://tvoje-plna-fotka-world2.jpg">
-          <img src="https://thumbnail-world2-m.jpg" alt="Global Leak">
-          <div class="name">Sophia (UK)</div>
-        </a>
-      </div>
-      <!-- Přidej víc worldwide postav -->
+    <div class="item">
+      <a href="gallery.html?id=lucie">
+        <img src="lucie-thumbnail.jpg" alt="Lucie">
+        <div class="name">Lucie (SK) - 45 fotek</div>
+      </a>
     </div>
+    <!-- Přidej další postavy – jen odkaz na gallery.html?id=jméno -->
   </div>
 
-  <!-- Další reklama dole -->
-  <div class="ad-banner">
-    Reklama
+  <h2>Worldwide Postavy</h2>
+  <div class="gallery">
+    <!-- Stejné jako výše pro worldwide postavy -->
   </div>
 </body>
 </html>
