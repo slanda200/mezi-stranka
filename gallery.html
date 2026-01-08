@@ -3,55 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galerie postavy (18+)</title>
+  <title>Galerie (18+)</title>
   <style>
-    /* Stejný styl jako menu */
-    body { background: #111; color: #fff; text-align: center; padding: 40px; }
-    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-    .item { width: 150px; }
-    img { width: 100%; border-radius: 10px; }
-    .name { font-size: 16px; margin-top: 5px; }
-    a { text-decoration: none; color: #00aaff; }
-    .warning { color: #ff6666; margin-bottom: 30px; }
+    body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
+    h1 { font-size: 40px; margin-bottom: 50px; }
+    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
+    .item { width: 180px; }
+    img { width: 100%; border-radius: 10px; box-shadow: 0 0 15px #000; }
+    .name { font-size: 18px; margin-top: 10px; color: #00aaff; }
+    a { text-decoration: none; }
+    .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
+    .ad-banner { height: 250px; background: #222; margin: 50px auto; max-width: 728px; padding: 20px; border-radius: 10px; }
   </style>
 
-  <!-- Adsterra reklamy na galerii -->
+  <!-- Adsterra Popunder + Social Bar (na load galerie) -->
   <script src="https://pl28425577.effectivegatecpm.com/4f/89/ba/4f89ba60d95eef4726d4bbdcecfa2661.js"></script>
   <script src="https://pl28425676.effectivegatecpm.com/c7/cc/46/c7cc46df83dd7e3ce8d448ad01095fdb.js"></script>
 </head>
 <body>
-  <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé.</div>
+  <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
   
-  <h1 id="postava-name">Načítání galerie...</h1>
-  
+  <h1 id="postava-name">Galerie postavy...</h1>
+
+  <!-- Reklama nahoře -->
+  <div class="ad-banner">
+    Reklama
+  </div>
+
   <div class="gallery" id="gallery"></div>
-  
-  <a href="index.html">Zpět na výběr postavy</a>
+
+  <!-- Reklama dole -->
+  <div class="ad-banner">
+    Reklama
+  </div>
+
+  <a href="index.html">Zpět na výběr</a>
 
   <script>
-    // Data fotek pro každou postavu (přidej své – array objektů s thumbnail a plnou URL)
-    const fotky = {
-      tereza: [
-        { thumb: "https://i.imgur.com/ABC123m.jpg", full: "https://i.imgur.com/ABC123.jpg" },
-        { thumb: "https://i.imgur.com/DEF456m.jpg", full: "https://i.imgur.com/DEF456.jpg" },
-        // ... přidej 50 objektů pro Terezu
+    // Data fotek pro každou postavu (přidej své)
+    const data = {
+      'nasta.theruss': [
+        { thumb: 'https://simp4.selti-delivery.ru/IMG_4858b25ebaff896c52f6.th.jpg', full: 'https://simp4.selti-delivery.ru/IMG_4858b25ebaff896c52f6.jpg' },
+        // Přidej další 49 fotek pro nasta.theruss (kopíruj tento objekt: { thumb: 'MINI_URL', full: 'PLNÁ_URL' }, )
       ],
-      lucie: [
-        // 50 fotek pro Lucii
-      ],
-      // přidej další postavy (id z URL)
+      // Přidej další postavy zde, např. 'tereza': [ { thumb: '...', full: '...' }, ... ]
     };
 
-    // Získání ID postavy z URL (?id=tereza)
+    // Získání ID postavy z URL (?id=nasta.theruss)
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('id') || 'tereza'; // default
+    const id = params.get('id') || 'nasta.theruss';
 
-    // Zobrazení jména postavy
-    document.getElementById('postava-name').textContent = id.charAt(0).toUpperCase() + id.slice(1) + " - Galerie (50 fotek)";
+    // Zobrazení jména
+    document.getElementById('postava-name').textContent = id + ' - Vyber fotku';
 
     // Generování galerie
     const gallery = document.getElementById('gallery');
-    const postavaFotky = fotky[id] || [];
+    const postavaFotky = data[id] || [];
 
     postavaFotky.forEach(f => {
       const item = document.createElement('div');
