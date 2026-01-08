@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QuickPic - Hot NSFW (18+)</title>
   <style>
+    /* Tvůj styl zůstal stejný */
     body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
     h1 { font-size: 40px; margin-bottom: 50px; }
     h2 { font-size: 32px; color: #ff4444; margin: 60px 0 20px; }
@@ -22,23 +23,25 @@
       background: #222;
       border-radius: 10px;
       padding: 10px;
+      color: #aaa;
     }
     @media (max-width: 768px) {
       .ad-banner { min-height: 250px; }
     }
   </style>
 
-  <!-- Adsterra Popunder + Social Bar (na load menu) -->
-<script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
+  <!-- Jen Popunder (neagresivní, na pozadí) -->
+  <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
 </head>
 <body>
   <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
   
   <h1>QuickPic - Vyber si</h1>
 
-  <!-- Reklama nahoře (desktop 728x90 + mobile 300x250) -->
+  <!-- Reklama nahoře -->
   <div class="ad-banner">
-    
+    Reklama se načítá...
+    <!-- Tvé banner kódy -->
     <script>
       atOptions = { 'key' : '2b2844954e2220b902ad439f350a7388', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
     </script>
@@ -51,9 +54,10 @@
   <h2>Worldwide</h2>
   <div class="gallery" id="worldwide-gallery"></div>
 
-  <!-- Reklama dole (desktop 728x90 + mobile 160x300 + 300x250) -->
+  <!-- Reklama dole -->
   <div class="ad-banner">
-    
+    Reklama se načítá...
+    <!-- Tvé banner kódy -->
     <script>
       atOptions = { 'key' : 'c64f8c58bfec8d551e2ac3bbae2841eb', 'format' : 'iframe', 'height' : 300, 'width' : 160, 'params' : {} };
     </script>
@@ -65,6 +69,7 @@
     <script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script>
   </div>
 
+  <!-- Tvůj JS pro načítání postav (s target="_blank") -->
   <script>
     fetch('postavy/list.txt')
       .then(response => response.text())
@@ -89,7 +94,6 @@
           }
         });
 
-        // Generuj CZ/SK s novým tabem
         const czskGallery = document.getElementById('czsk-gallery');
         czsk.forEach(id => {
           const item = document.createElement('div');
@@ -98,7 +102,6 @@
           czskGallery.appendChild(item);
         });
 
-        // Generuj Worldwide s novým tabem
         const worldwideGallery = document.getElementById('worldwide-gallery');
         worldwide.forEach(id => {
           const item = document.createElement('div');
