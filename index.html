@@ -8,7 +8,7 @@
     body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
     h1 { font-size: 40px; margin-bottom: 50px; }
     h2 { font-size: 32px; color: #ff4444; margin: 60px 0 20px; }
-    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 30px; }
+    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
     .item { width: 180px; padding: 20px; background: #222; border-radius: 10px; }
     .name { font-size: 24px; color: #00aaff; }
     a { text-decoration: none; }
@@ -16,7 +16,7 @@
     .ad-banner { height: 250px; background: #222; margin: 50px auto; max-width: 728px; padding: 20px; border-radius: 10px; }
   </style>
 
-  <!-- Adsterra Popunder + Social Bar (na load menu) -->
+  <!-- Adsterra reklamy -->
   <script src="https://pl28425577.effectivegatecpm.com/4f/89/ba/4f89ba60d95eef4726d4bbdcecfa2661.js"></script>
   <script src="https://pl28425676.effectivegatecpm.com/c7/cc/46/c7cc46df83dd7e3ce8d448ad01095fdb.js"></script>
 </head>
@@ -25,35 +25,46 @@
   
   <h1>QuickPic - Vyber si</h1>
 
-  <script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
-  <script async="async" data-cfasync="false" src="https://pl28430457.effectivegatecpm.com/70e1eacc947ecce76ca34e0e5121c62e/invoke.js"></script>
-<div id="container-70e1eacc947ecce76ca34e0e5121c62e"></div>
+  <div class="ad-banner">Reklama</div>
 
-  <!-- Reklama nahoře -->
-  <div class="ad-banner">
-    Reklama
-  </div>
-
-  <!-- Sekce CZ/SK (názvy postav) -->
   <h2>CZ/SK</h2>
-  <div class="gallery">
-    <div class="item">
-      <a href="gallery.html?id=nasta.theruss">
-        <div class="name">nasta.theruss</div>
-      </a>
-    </div>
-    <!-- Přidej další CZ/SK postavy (kopíruj .item blok) -->
-  </div>
+  <div class="gallery" id="czsk-gallery"></div>
 
-  <!-- Sekce Worldwide (názvy postav) -->
   <h2>Worldwide</h2>
-  <div class="gallery">
-    <!-- Přidej worldwide postavy (stejný blok) -->
-  </div>
+  <div class="gallery" id="worldwide-gallery"></div>
 
-  <!-- Reklama dole -->
-  <div class="ad-banner">
-    Reklama
-  </div>
+  <div class="ad-banner">Reklama</div>
+
+  <script>
+    // Načti seznam postav z list.txt (jedno jméno na řádek)
+    fetch('postavy/list.txt')
+      .then(response => response.text())
+      .then(text => {
+        const postavy = text.trim().split('\n').map(line => line.trim());
+
+        // Rozděl na CZ/SK a Worldwide (první polovina CZ/SK, druhá Worldwide – nebo uprav podle potřeby)
+        const half = Math.ceil(postavy.length / 2);
+        const czsk = postavy.slice(0, half);
+        const worldwide = postavy.slice(half);
+
+        // Generuj menu pro CZ/SK
+        const czskGallery = document.getElementById('czsk-gallery');
+        czsk.forEach(id => {
+          const item = document.createElement('div');
+          item.className = 'item';
+          item.innerHTML = `<a href="gallery.html?id=${id}"><div class="name">${id}</div></a>`;
+          czskGallery.appendChild(item);
+        });
+
+        // Generuj menu pro Worldwide
+        const worldwideGallery = document.getElementById('worldwide-gallery');
+        worldwide.forEach(id => {
+          const item = document.createElement('div');
+          item.className = 'item';
+          item.innerHTML = `<a href="gallery.html?id=${id}"><div class="name">${id}</div></a>`;
+          worldwideGallery.appendChild(item);
+        });
+      });
+  </script>
 </body>
 </html>
