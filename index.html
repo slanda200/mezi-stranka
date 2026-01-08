@@ -36,18 +36,30 @@
   <div class="ad-banner">Reklama</div>
 
   <script>
-    // Načti seznam postav z list.txt (jedno jméno na řádek)
     fetch('postavy/list.txt')
       .then(response => response.text())
       .then(text => {
-        const postavy = text.trim().split('\n').map(line => line.trim());
+        const lines = text.split('\n');
+        let currentSection = 'czsk'; // start v CZ/SK
+        const czsk = [];
+        const worldwide = [];
 
-        // Rozděl na CZ/SK a Worldwide (první polovina CZ/SK, druhá Worldwide – nebo uprav podle potřeby)
-        const half = Math.ceil(postavy.length / 2);
-        const czsk = postavy.slice(0, half);
-        const worldwide = postavy.slice(half);
+        lines.forEach(line => {
+          line = line.trim();
+          if (line.startsWith('# CZ/SK')) {
+            currentSection = 'czsk';
+          } else if (line.startsWith('# Worldwide')) {
+            currentSection = 'worldwide';
+          } else if (line && !line.startsWith('#')) {
+            if (currentSection === 'czsk') {
+              czsk.push(line);
+            } else {
+              worldwide.push(line);
+            }
+          }
+        });
 
-        // Generuj menu pro CZ/SK
+        // Generuj CZ/SK
         const czskGallery = document.getElementById('czsk-gallery');
         czsk.forEach(id => {
           const item = document.createElement('div');
@@ -56,7 +68,7 @@
           czskGallery.appendChild(item);
         });
 
-        // Generuj menu pro Worldwide
+        // Generuj Worldwide
         const worldwideGallery = document.getElementById('worldwide-gallery');
         worldwide.forEach(id => {
           const item = document.createElement('div');
