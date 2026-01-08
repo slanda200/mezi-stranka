@@ -7,10 +7,10 @@
   <style>
     body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
     h1 { font-size: 40px; margin-bottom: 50px; }
-    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
-    .item { width: 180px; }
+    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; } /* Menší gap pro víc fotek na řádek */
+    .item { width: 90px; } /* Poloviční velikost (původně 180px) – uprav na 100px nebo 120px, jak chceš */
     img { width: 100%; border-radius: 10px; box-shadow: 0 0 15px #000; }
-    .name { font-size: 18px; margin-top: 10px; color: #00aaff; }
+    .name { font-size: 14px; margin-top: 5px; color: #00aaff; } /* Menší text pod fotkou */
     a { text-decoration: none; }
     .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
     .ad-banner { height: 250px; background: #222; margin: 50px auto; max-width: 728px; padding: 20px; border-radius: 10px; }
@@ -20,44 +20,43 @@
   <script src="https://pl28425577.effectivegatecpm.com/4f/89/ba/4f89ba60d95eef4726d4bbdcecfa2661.js"></script>
   <script src="https://pl28425676.effectivegatecpm.com/c7/cc/46/c7cc46df83dd7e3ce8d448ad01095fdb.js"></script>
   <script>
-  atOptions = {
-    'key' : '2d3bdd7a876dc6ad8431008f56a1488d',
-    'format' : 'iframe',
-    'height' : 600,
-    'width' : 160,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/2d3bdd7a876dc6ad8431008f56a1488d/invoke.js"></script>
+    atOptions = {
+      'key' : '2d3bdd7a876dc6ad8431008f56a1488d',
+      'format' : 'iframe',
+      'height' : 600,
+      'width' : 160,
+      'params' : {}
+    };
+  </script>
+  <script src="https://www.highperformanceformat.com/2d3bdd7a876dc6ad8431008f56a1488d/invoke.js"></script>
 </head>
 <body>
   <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
   
   <h1 id="postava-name">Galerie postavy...</h1>
-
+  
   <!-- Reklama nahoře -->
   <div class="ad-banner">
     Reklama
   </div>
-
+  
   <div class="gallery" id="gallery"></div>
-
+  
   <!-- Reklama dole -->
   <div class="ad-banner">
     Reklama
   </div>
-
+  
   <a href="index.html">Zpět na výběr</a>
 
   <script>
-   
     // Data fotek pro každou postavu (přidej své)
     const data = {
       'nasta.theruss': [
         { thumb: 'https://simp4.selti-delivery.ru/IMG_4858b25ebaff896c52f6.th.jpg', full: 'https://simp4.selti-delivery.ru/IMG_4858b25ebaff896c52f6.jpg' },
-        // Přidej další 49 fotek pro nasta.theruss (kopíruj tento objekt: { thumb: 'MINI_URL', full: 'PLNÁ_URL' }, )
+        // Přidej další fotky pro nasta.theruss
       ],
-      // Přidej další postavy zde, např. 'tereza': [ { thumb: '...', full: '...' }, ... ]
+      // Přidej další postavy
     };
 
     // Získání ID postavy z URL (?id=nasta.theruss)
