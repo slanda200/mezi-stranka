@@ -7,5 +7,6 @@ soflnka
 kundosaki
 satnady
 inkeddory
+teribalci
 
 # Worldwide postavy
