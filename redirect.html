@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
+  <link rel="icon" href="favicon.png" type="image/png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Načítání obsahu (18+)</title>
@@ -14,7 +15,18 @@
   </style>
 </head>
 <body>
-  <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
+<body>
+  <!-- Logo – střed vlevo, bez blur, oddělené od warningu -->
+  <div style="position: fixed; top: 20px; left: 5%; z-index: 999;">
+    <a href="index.html">
+      <img src="logo.png" alt="QuickPic Logo" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
+    </a>
+  </div>
+
+  <!-- Warning text – posunutý níže, aby logo nepřekrýval -->
+  <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
+
+</body>
  
   <h2>Obsah se načítá...</h2>
   <p>Za <span id="timer">10</span> sekund přesměrování na fotku</p>
