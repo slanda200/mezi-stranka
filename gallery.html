@@ -4,41 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galerie (18+)</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
-    h1 { font-size: 40px; margin-bottom: 50px; }
-    .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 30px 0; }
-    .item { width: 90px; }
-    img { width: 100%; border-radius: 10px; filter: blur(5px); box-shadow: 0 0 15px #000; }
-    .name { font-size: 14px; margin-top: 5px; color: #00aaff; }
-    a { text-decoration: none; }
-    .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
-    .ad-banner {
-      margin: 50px auto;
-      width: 100%;
-      max-width: 970px;
-      min-height: 90px;
-      text-align: center;
-      background: #222;
-      border-radius: 10px;
-      padding: 10px;
+ <style>
+  body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
+  h1 { font-size: 40px; margin-bottom: 50px; }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 sloupce na mobilu */
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+  }
+  .item { width: 100%; max-width: 180px; } /* Omezí velikost jednotlivé fotky */
+  img { width: 100%; border-radius: 10px; filter: blur(5px); box-shadow: 0 0 15px #000; }
+  .name { font-size: 14px; margin-top: 5px; color: #00aaff; }
+  a { text-decoration: none; }
+  .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
+  .ad-banner {
+    margin: 50px auto;
+    width: 100%;
+    max-width: 970px;
+    min-height: 90px;
+    text-align: center;
+    background: #222;
+    border-radius: 10px;
+    padding: 10px;
+  }
+  @media (max-width: 768px) {
+    .ad-banner { min-height: 250px; }
+  }
+
+  /* Na větších obrazovkách max 6 sloupců */
+  @media (min-width: 769px) {
+    .gallery {
+      grid-template-columns: repeat(6, 1fr); /* max 6 fotek vedle sebe */
     }
-    @media (max-width: 768px) {
-      .ad-banner { min-height: 250px; }
+  }
+
+  /* Na extra velkých obrazovkách (např. 4K) se to stále drží 6 */
+  @media (min-width: 1200px) {
+    .gallery {
+      grid-template-columns: repeat(6, 1fr);
+      max-width: 1200px; /* Omezí šířku galerie, aby to nevypadalo příliš roztažené */
+      margin-left: auto;
+      margin-right: auto;
     }
-    .pagination { margin: 30px 0; font-size: 18px; }
-    .pagination button {
-      padding: 10px 15px;
-      margin: 0 5px;
-      background: #333;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .pagination button.active { background: #00aaff; }
-    .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
-  </style>
+  }
+</style>
 
   <!-- Adsterra Popunder + Social Bar (na load galerie) -->
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
