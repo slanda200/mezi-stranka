@@ -6,5 +6,6 @@ xholakys
 soflnka
 kundosaki
 satnady
+inkeddory
 
 # Worldwide postavy
