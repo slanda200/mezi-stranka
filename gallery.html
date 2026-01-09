@@ -7,6 +7,7 @@
  <style>
   body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
   h1 { font-size: 40px; margin-bottom: 50px; }
+   .logo-img { filter: none !important; } /* Logo bez bluru */
   .gallery {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 sloupce na mobilu */
@@ -56,11 +57,20 @@
   <script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
 </head>
 <body>
-  <div style="position: fixed; top: 20px; right: 20px; z-index: 999;">
-  <a href="index.html">
-    <img src="logo.png" alt="QuickPic Logo" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
-  </a>
-</div>
+ <body>
+  <!-- Logo – střed vlevo, bez blur, oddělené od warningu -->
+  <div style="position: fixed; top: 20px; left: 5%; z-index: 999;">
+    <a href="index.html">
+     <img src="logo.png" alt="QuickPic Logo" class="logo-img" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
+    </a>
+  </div>
+
+  <!-- Warning text – posunutý níže, aby logo nepřekrýval -->
+  <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
+  
+  <!-- Zbytek tvého obsahu (h1, galerie atd.) -->
+  ...
+</body>
   <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
   
   <h1 id="postava-name">Načítání galerie...</h1>
