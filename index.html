@@ -41,6 +41,33 @@
 
   <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
 
+  <div style="margin-top: 20px; font-size: 14px; color: #aaa;">
+  Unikátních návštěvníků celkem: <span id="visitor-count">Načítání...</span>
+</div>
+
+<script>
+  const SITE = "quickpic.site"; // nebo jakýkoliv unikátní string
+  const KEY = "unique_visitors";
+
+  // Inkrementuj jen jednou za prohlížeč (přibližně unikátní)
+  if (!localStorage.getItem("visited")) {
+    fetch(`https://api.countapi.xyz/hit/${SITE}/${KEY}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("visitor-count").innerText = data.value;
+        localStorage.setItem("visited", "true");
+      })
+      .catch(() => document.getElementById("visitor-count").innerText = "chyba");
+  } else {
+    fetch(`https://api.countapi.xyz/get/${SITE}/${KEY}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("visitor-count").innerText = data.value;
+      })
+      .catch(() => document.getElementById("visitor-count").innerText = "chyba");
+  }
+</script>
+
   <h1>QuickPic - Vyber si</h1>
 
   <div style="font-size: 18px; margin: 50px auto; max-width: 800px; padding: 20px; background: #222; border-radius: 10px;">
