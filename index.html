@@ -41,30 +41,35 @@
 
   <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
 
-  <div style="margin-top: 20px; font-size: 14px; color: #aaa;">
+<div style="margin-top: 20px; font-size: 14px; color: #aaa; text-align: center;">
   Unikátních návštěvníků celkem: <span id="visitor-count">Načítání...</span>
 </div>
 
 <script>
-  const SITE = "quickpic.site"; // nebo jakýkoliv unikátní string
-  const KEY = "unique_visitors";
+  const COUNTER_KEY = "quickpic-unique-visits";  // unikátní klíč pro tvou stránku (můžeš změnit)
 
-  // Inkrementuj jen jednou za prohlížeč (přibližně unikátní)
-  if (!localStorage.getItem("visited")) {
-    fetch(`https://api.countapi.xyz/hit/${SITE}/${KEY}`)
+  // Zkus načíst aktuální hodnotu + inkrementovat jen jednou za prohlížeč
+  if (!localStorage.getItem("hasVisitedQuickpic")) {
+    fetch(`https://counterapi.dev/hit/${COUNTER_KEY}`, { method: "POST" })
       .then(res => res.json())
       .then(data => {
-        document.getElementById("visitor-count").innerText = data.value;
-        localStorage.setItem("visited", "true");
+        document.getElementById("visitor-count").innerText = data.count || "chyba";
+        localStorage.setItem("hasVisitedQuickpic", "true");
       })
-      .catch(() => document.getElementById("visitor-count").innerText = "chyba");
+      .catch(err => {
+        console.error("Counter error:", err);
+        document.getElementById("visitor-count").innerText = "chyba";
+      });
   } else {
-    fetch(`https://api.countapi.xyz/get/${SITE}/${KEY}`)
+    // Jen načti bez inkrementu
+    fetch(`https://counterapi.dev/get/${COUNTER_KEY}`)
       .then(res => res.json())
       .then(data => {
-        document.getElementById("visitor-count").innerText = data.value;
+        document.getElementById("visitor-count").innerText = data.count || "chyba";
       })
-      .catch(() => document.getElementById("visitor-count").innerText = "chyba");
+      .catch(() => {
+        document.getElementById("visitor-count").innerText = "chyba";
+      });
   }
 </script>
 
