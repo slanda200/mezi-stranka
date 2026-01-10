@@ -137,6 +137,8 @@
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
 
+      const UNIVERSAL_VIDEO_THUMB = "video-universal-thumb.jpg";
+
       const start = (page - 1) * photosPerPage;
       const end = Math.min(start + photosPerPage, allPhotos.length);
       const pagePhotos = allPhotos.slice(start, end);
@@ -152,6 +154,7 @@
         `;
         gallery.appendChild(item);
       });
+      const thumbToUse = isVideo ? UNIVERSAL_VIDEO_THUMB : f.thumb;
     }
 
     function renderPagination() {
