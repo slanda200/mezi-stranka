@@ -10,7 +10,7 @@
     h1 { font-size: 40px; margin-bottom: 50px; }
     .logo-img { filter: none !important; } /* Logo bez bluru */
     .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-    .item { width: 90px; }
+    .item { width: 90px; position: relative; }
     img { width: 100%; border-radius: 10px; filter: blur(2px); box-shadow: 0 0 15px #000; }
     .name { font-size: 14px; margin-top: 5px; color: #00aaff; }
     a { text-decoration: none; }
@@ -28,7 +28,6 @@
     @media (max-width: 768px) {
       .ad-banner { min-height: 250px; }
     }
-    /* Vylepšená paginace – hezčí, kulatá tlačítka */
     .pagination {
       margin: 40px 0;
       display: flex;
@@ -69,11 +68,11 @@
       transform: none;
     }
   </style>
-  <!-- Adsterra Popunder + Social Bar (na load galerie) -->
+  <!-- Adsterra Popunder + Social Bar -->
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
 </head>
 <body>
-  <!-- Logo – střed vlevo, bez blur, oddělené od warningu -->
+  <!-- Logo -->
   <div style="position: fixed; top: 20px; left: 5%; z-index: 999;">
     <a href="index.html">
       <img src="logo.png" alt="QuickPic Logo" class="logo-img" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
@@ -81,25 +80,22 @@
   </div>
 
   <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
-  
+ 
   <h1 id="postava-name">Načítání galerie...</h1>
-  
+ 
   <!-- Reklama nahoře -->
-  <div class="ad-banner">
-  </div>
-
+  <div class="ad-banner"></div>
   <script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
-  
+ 
   <div class="gallery" id="gallery"></div>
-  
-  <!-- Vylepšená paginace -->
+ 
+  <!-- Paginace -->
   <div class="pagination" id="pagination"></div>
-  
+ 
   <!-- Reklama dole -->
-  <div class="ad-banner">
-  </div>
-  
+  <div class="ad-banner"></div>
+ 
   <a href="index.html">Zpět na výběr</a>
 
   <script>
@@ -112,55 +108,81 @@
     document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
 
     fetch(`postavy/${id}.txt`)
-      .then(response => response.text())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Soubor nenalezen (status ${response.status})`);
+        }
+        return response.text();
+      })
       .then(text => {
         const lines = text.trim().split('\n');
         allPhotos = [];
         for (let i = 0; i < lines.length; i += 2) {
-          const thumb = lines[i].trim();
-          const full = lines[i + 1].trim();
-          if (thumb && full) {
+          const thumb = lines[i]?.trim() || '';
+          const full = lines[i + 1]?.trim() || '';
+          if (full) {  // hlavní je mít full URL
             allPhotos.push({ thumb, full });
           }
         }
 
-        document.getElementById('postava-name').textContent = id + ' - ' + allPhotos.length + ' fotek';
+        if (allPhotos.length === 0) {
+          document.getElementById('postava-name').textContent = id + ' - žádné položky';
+        } else {
+          document.getElementById('postava-name').textContent = id + ' - ' + allPhotos.length + ' položek';
+        }
 
         renderPage(currentPage);
         renderPagination();
       })
       .catch(err => {
-        document.getElementById('postava-name').textContent = 'Postava nenalezena';
+        console.error('Chyba při načítání souboru:', err);
+        document.getElementById('postava-name').textContent = 'Postava nenalezena – zkontroluj soubor postavy/' + id + '.txt';
       });
 
     function renderPage(page) {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
 
-      const UNIVERSAL_VIDEO_THUMB = "video-universal-thumb.jpg";
+      const UNIVERSAL_VIDEO_THUMB = "video-universal-thumb.jpg"; // ← Nahraj tento soubor do stejné složky jako gallery.html
 
       const start = (page - 1) * photosPerPage;
       const end = Math.min(start + photosPerPage, allPhotos.length);
       const pagePhotos = allPhotos.slice(start, end);
 
       pagePhotos.forEach(f => {
+        const isVideo = /\.(mp4|webm|mov)$/i.test(f.full);
+
+        // Rozhodnutí o miniaturě
+        let thumbSrc = f.thumb;
+        if (isVideo) {
+          thumbSrc = UNIVERSAL_VIDEO_THUMB;  // univerzální miniatura pro všechna videa
+        }
+        if (!thumbSrc) {
+          thumbSrc = "placeholder.jpg"; // fallback, pokud by něco chybělo
+        }
+
         const item = document.createElement('div');
         item.className = 'item';
+
+        let playIcon = '';
+        if (isVideo) {
+          playIcon = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:#ff3366; text-shadow:0 0 12px black; pointer-events:none; opacity:0.9;">▶</div>';
+        }
+
         item.innerHTML = `
-          <a href="redirect.html?url=${encodeURIComponent(f.full)}" target="_blank" rel="noopener">
-            <img src="${f.thumb}" alt="Fotka">
-            <div class="name">Klikni pro full</div>
+          <a href="redirect.html?url=${encodeURIComponent(f.full)}" target="_blank" rel="noopener" style="position:relative; display:block;">
+            <img src="${thumbSrc}" alt="${isVideo ? 'Video' : 'Fotka'}" loading="lazy">
+            ${playIcon}
+            <div class="name">Klikni pro ${isVideo ? 'VIDEO 🔥' : 'full'}</div>
           </a>
         `;
         gallery.appendChild(item);
       });
-      const thumbToUse = isVideo ? UNIVERSAL_VIDEO_THUMB : f.thumb;
     }
 
     function renderPagination() {
       const pagination = document.getElementById('pagination');
       pagination.innerHTML = '';
-
       const totalPages = Math.ceil(allPhotos.length / photosPerPage);
 
       const prev = document.createElement('button');
@@ -177,10 +199,7 @@
 
       let startPage = Math.max(1, currentPage - 2);
       let endPage = Math.min(totalPages, startPage + 4);
-
-      if (endPage - startPage < 4) {
-        startPage = Math.max(1, endPage - 4);
-      }
+      if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
 
       for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement('button');
@@ -210,11 +229,7 @@
     function updatePagination() {
       const buttons = document.querySelectorAll('.pagination button');
       buttons.forEach(btn => {
-        if (btn.textContent === currentPage.toString()) {
-          btn.className = 'active';
-        } else {
-          btn.className = '';
-        }
+        btn.className = (btn.textContent === currentPage.toString()) ? 'active' : '';
       });
     }
   </script>
