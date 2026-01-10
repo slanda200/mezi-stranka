@@ -75,41 +75,10 @@
 
   <!-- Reklama dole -->
   <div class="ad-banner">
-
-  <div style="margin-top: 20px; font-size: 14px; color: #aaa; text-align: center;">
-  Celkem: <span id="visitor-count">Načítání...</span>
+<div style="margin: 20px auto; text-align: center; font-size: 14px; color: #aaa;">
+  Celkem návštěv: 
+  <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fquickpic.site&count_bg=%23FF4444&title_bg=%23111111&icon=&icon_color=%23E7E7E7&title=návštěv&edge_flat=false" alt="visits">
 </div>
-
-<script>
-  const COUNTER_KEY = "quickpic-unique-visits";  // unikátní klíč pro tvou stránku (můžeš změnit)
-
-  // Zkus načíst aktuální hodnotu + inkrementovat jen jednou za prohlížeč
-  if (!localStorage.getItem("hasVisitedQuickpic")) {
-    fetch(`https://counterapi.dev/hit/${COUNTER_KEY}`, { method: "POST" })
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("visitor-count").innerText = data.count || "chyba";
-        localStorage.setItem("hasVisitedQuickpic", "true");
-      })
-      .catch(err => {
-        console.error("Counter error:", err);
-        document.getElementById("visitor-count").innerText = "chyba";
-      });
-  } else {
-    // Jen načti bez inkrementu
-    fetch(`https://counterapi.dev/get/${COUNTER_KEY}`)
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("visitor-count").innerText = data.count || "chyba";
-      })
-      .catch(() => {
-        document.getElementById("visitor-count").innerText = "chyba";
-      });
-  }
-</script>
-
-  
-
   </div>
 
   <script>
