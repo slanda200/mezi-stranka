@@ -70,7 +70,54 @@
   </style>
   <!-- Adsterra Popunder + Social Bar -->
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
-  <!-- Firebase SDK – modularní verze přes CDN (funguje bez bundleru) -->
+  <!-- Firebase SDK – modularní verze přes CDN -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, doc, updateDoc, setDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAOUcva0oduASghABPVbZIDFSF87cBDdXU",
+      authDomain: "lajky-79446.firebaseapp.com",
+      projectId: "lajky-79446",
+      storageBucket: "lajky-79446.firebasestorage.app",
+      messagingSenderId: "515757817032",
+      appId: "1:515757817032:web:2fac04b37e0f266352b9fd",
+      measurementId: "G-EXFFQM5WW5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    signInAnonymously(auth)
+      .then(() => console.log("Anonymně přihlášen – Firebase ready"))
+      .catch(error => console.error("Chyba přihlášení:", error.message));
+
+    window.likeFunctions = {
+      likePost: async (postavaId) => {
+        if (!db) return console.error("DB není připravené");
+        const docRef = doc(db, "likes", postavaId);
+        try {
+          await updateDoc(docRef, { count: increment(1) });
+        } catch (e) {
+          if (e.code === 'not-found') {
+            await setDoc(docRef, { count: 1 });
+          } else {
+            console.error("Chyba lajkování:", e);
+          }
+        }
+      },
+      listenLikes: (postavaId, callback) => {
+        if (!db) return;
+        const docRef = doc(db, "likes", postavaId);
+        onSnapshot(docRef, (snap) => {
+          const count = snap.exists() ? snap.data().count : 0;
+          callback(count);
+        });
+      }
+    };
+  </script>
 </head>
 <body>
   <!-- Logo -->
@@ -79,24 +126,17 @@
       <img src="logo.png" alt="QuickPic Logo" class="logo-img" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
     </a>
   </div>
-
   <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
- 
   <h1 id="postava-name">Načítání galerie...</h1>
- 
   <!-- Reklama nahoře -->
   <div class="ad-banner"></div>
   <script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
- 
   <div class="gallery" id="gallery"></div>
- 
   <!-- Paginace -->
   <div class="pagination" id="pagination"></div>
- 
   <!-- Reklama dole -->
   <div class="ad-banner"></div>
- 
   <a href="index.html">Zpět na výběr</a>
 
   <script>
@@ -105,7 +145,6 @@
     const photosPerPage = 30;
     let currentPage = 1;
     let allPhotos = [];
-
     document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
 
     fetch(`postavy/${id}.txt`)
@@ -121,17 +160,15 @@
         for (let i = 0; i < lines.length; i += 2) {
           const thumb = lines[i]?.trim() || '';
           const full = lines[i + 1]?.trim() || '';
-          if (full) {  // hlavní je mít full URL
+          if (full) {
             allPhotos.push({ thumb, full });
           }
         }
-
         if (allPhotos.length === 0) {
           document.getElementById('postava-name').textContent = id + ' - žádné položky';
         } else {
           document.getElementById('postava-name').textContent = id + ' - ' + allPhotos.length + ' položek';
         }
-
         renderPage(currentPage);
         renderPagination();
       })
@@ -143,33 +180,25 @@
     function renderPage(page) {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
-
-      const UNIVERSAL_VIDEO_THUMB = "video-universal-thumb.png"; // ← Nahraj tento soubor do stejné složky jako gallery.html
-
+      const UNIVERSAL_VIDEO_THUMB = "video-universal-thumb.png";
       const start = (page - 1) * photosPerPage;
       const end = Math.min(start + photosPerPage, allPhotos.length);
       const pagePhotos = allPhotos.slice(start, end);
-
       pagePhotos.forEach(f => {
         const isVideo = /\.(mp4|webm|mov)$/i.test(f.full);
-
-        // Rozhodnutí o miniaturě
         let thumbSrc = f.thumb;
         if (isVideo) {
-          thumbSrc = UNIVERSAL_VIDEO_THUMB;  // univerzální miniatura pro všechna videa
+          thumbSrc = UNIVERSAL_VIDEO_THUMB;
         }
         if (!thumbSrc) {
-          thumbSrc = "placeholder.jpg"; // fallback, pokud by něco chybělo
+          thumbSrc = "placeholder.jpg";
         }
-
         const item = document.createElement('div');
         item.className = 'item';
-
         let playIcon = '';
         if (isVideo) {
           playIcon = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:#ff3366; text-shadow:0 0 12px black; pointer-events:none; opacity:0.9;">▶</div>';
         }
-
         item.innerHTML = `
           <a href="redirect.html?url=${encodeURIComponent(f.full)}" target="_blank" rel="noopener" style="position:relative; display:block;">
             <img src="${thumbSrc}" alt="${isVideo ? 'Video' : 'Fotka'}" loading="lazy">
@@ -177,13 +206,57 @@
             <div class="name">Klikni pro ${isVideo ? 'VIDEO 🔥' : 'full'}</div>
           </a>
         `;
+
+        // === OPRavené lajky ===
+        const postavaId = f.thumb.split('/').pop().split('.')[0] || 
+                          f.full.split('/').pop().split('.')[0] || 
+                          'neznama';
+
+        const likeContainer = document.createElement('div');
+        likeContainer.style.marginTop = '8px';
+        likeContainer.style.fontSize = '14px';
+        likeContainer.style.color = '#ff3366';
+
+        const likeButton = document.createElement('button');
+        likeButton.innerHTML = '❤️ Lajk';
+        likeButton.style.background = 'transparent';
+        likeButton.style.border = 'none';
+        likeButton.style.cursor = 'pointer';
+        likeButton.style.fontSize = '16px';
+        likeButton.style.color = '#ff3366';
+
+        const likeCount = document.createElement('span');
+        likeCount.innerText = ' 0';
+        likeCount.className = 'like-count';
+
+        likeButton.appendChild(likeCount);
+        likeContainer.appendChild(likeButton);
+
+        // Klik → lajk
+        likeButton.onclick = () => {
+          if (window.likeFunctions) {
+            window.likeFunctions.likePost(postavaId);
+          }
+        };
+
+        // Real-time počet
+        if (window.likeFunctions) {
+          window.likeFunctions.listenLikes(postavaId, (count) => {
+            likeCount.innerText = ` ${count}`;
+          });
+        }
+
+        item.appendChild(likeContainer);
+        // === konec lajků ===
+
         gallery.appendChild(item);
+      });
+    }
 
     function renderPagination() {
       const pagination = document.getElementById('pagination');
       pagination.innerHTML = '';
       const totalPages = Math.ceil(allPhotos.length / photosPerPage);
-
       const prev = document.createElement('button');
       prev.textContent = '◀ Předchozí';
       prev.disabled = currentPage === 1;
@@ -195,11 +268,9 @@
         }
       };
       pagination.appendChild(prev);
-
       let startPage = Math.max(1, currentPage - 2);
       let endPage = Math.min(totalPages, startPage + 4);
       if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
-
       for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
@@ -211,7 +282,6 @@
         };
         pagination.appendChild(btn);
       }
-
       const next = document.createElement('button');
       next.textContent = 'Další ▶';
       next.disabled = currentPage === totalPages;
