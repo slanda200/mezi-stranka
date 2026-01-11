@@ -72,12 +72,11 @@
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
   <!-- Firebase SDK – modularní verze přes CDN (funguje bez bundleru) -->
 <script type="module">
-  // Importy fungují jen v type="module"
+  // Importy Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-  import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, updateDoc, setDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-  // Tvůj config (zkopírovaný z Firebase konzole)
   const firebaseConfig = {
     apiKey: "AIzaSyAOUcva0oduASghABPVbZIDFSF87cBDdXU",
     authDomain: "lajky-79446.firebaseapp.com",
@@ -88,22 +87,39 @@
     measurementId: "G-EXFFQM5WW5"
   };
 
-  // Inicializace
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Automaticky přihlásit anonymně při načtení stránky
+  // Automatické anonymní přihlášení
   signInAnonymously(auth)
-    .then(() => console.log("Anonymně přihlášen"))
-    .catch(error => console.error("Chyba přihlášení:", error));
+    .then(() => console.log("Anonymně přihlášen – Firebase ready"))
+    .catch(error => console.error("Chyba přihlášení do Firebase:", error.message));
 
-  // Globálně dostupné pro použití v renderPage
-  window.db = db;  // Abychom mohli používat db v jiných funkcích
-  window.doc = doc;
-  window.getDoc = getDoc;
-  window.updateDoc = updateDoc;
-  window.increment = increment;
+  // Globální funkce pro lajky
+  window.likeFunctions = {
+    likePost: async (postavaId) => {
+      if (!db) return console.error("DB není připravené");
+      const docRef = doc(db, "likes", postavaId);
+      try {
+        await updateDoc(docRef, { count: increment(1) });
+      } catch (e) {
+        if (e.code === 'not-found') {
+          await setDoc(docRef, { count: 1 });
+        } else {
+          console.error("Chyba při lajkování:", e);
+        }
+      }
+    },
+    listenLikes: (postavaId, callback) => {
+      if (!db) return;
+      const docRef = doc(db, "likes", postavaId);
+      return onSnapshot(docRef, (snap) => {
+        const count = snap.exists() ? snap.data().count : 0;
+        callback(count);
+      });
+    }
+  };
 </script>
 </head>
 <body>
@@ -213,8 +229,10 @@
         `;
         gallery.appendChild(item);
 
-        // Uvnitř forEach – pro každou položku/postavu
-const postavaId = f.thumb.split('/').pop().split('.')[0] || f.full.split('/').pop().split('.')[0] || 'neznama';  // Jednoduchý unikátní ID z URL (např. nasta.theruss)
+     // Uvnitř forEach – pro každou položku/postavu
+const postavaId = f.thumb.split('/').pop().split('.')[0] || 
+                  f.full.split('/').pop().split('.')[0] || 
+                  'neznama'; // unikátní ID postavy
 
 const likeContainer = document.createElement('div');
 likeContainer.style.marginTop = '8px';
@@ -236,28 +254,24 @@ likeCount.className = 'like-count';
 likeButton.appendChild(likeCount);
 likeContainer.appendChild(likeButton);
 
-// Při kliku přičti lajk
-likeButton.onclick = async () => {
-  const docRef = doc(window.db, "likes", postavaId);
-  try {
-    await updateDoc(docRef, {
-      count: increment(1)
-    });
-  } catch (e) {
-    // Pokud dokument neexistuje → vytvoř ho s 1
-    await setDoc(docRef, { count: 1 });
+// Klik → přičti lajk
+likeButton.onclick = () => {
+  if (window.likeFunctions) {
+    window.likeFunctions.likePost(postavaId);
+  } else {
+    console.error("Firebase funkce nejsou načtené");
   }
 };
 
-// Real-time načítání počtu lajků
-onSnapshot(doc(window.db, "likes", postavaId), (docSnap) => {
-  const count = docSnap.exists() ? docSnap.data().count : 0;
-  likeCount.innerText = ` ${count}`;
-});
+// Real-time aktualizace počtu lajků
+if (window.likeFunctions) {
+  window.likeFunctions.listenLikes(postavaId, (count) => {
+    likeCount.innerText = ` ${count}`;
+  });
+}
 
-// Přidej do item (např. pod name)
+// Přidej pod položku (item)
 item.appendChild(likeContainer);
-      });
     }
 
     function renderPagination() {
