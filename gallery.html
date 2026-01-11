@@ -29,7 +29,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { getFirestore, doc, updateDoc, setDoc, increment, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getFirestore, doc, updateDoc, setDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAOUcva0oduASghABPVbZIDFSF87cBDdXU",
@@ -50,14 +50,31 @@
       .catch(error => console.error("Chyba přihlášení:", error.message));
 
     window.likeFunctions = {
-      toggleLike: async (postavaId, type) => {  // type: 'likes' nebo 'dislikes'
-        if (!db) return console.error("DB není připravené");
+      likePost: async (postavaId) => {
+        if (!db) return;
         const docRef = doc(db, "likes", postavaId);
-        const snap = await getDoc(docRef);
-        const data = snap.exists() ? snap.data() : { likes: 0, dislikes: 0 };
-        const current = data[type] || 0;
-
-        await updateDoc(docRef, { [type]: increment(current > 0 ? -1 : 1) });
+        try {
+          await updateDoc(docRef, { likes: increment(1) });
+        } catch (e) {
+          if (e.code === 'not-found') {
+            await setDoc(docRef, { likes: 1, dislikes: 0 });
+          } else {
+            console.error("Chyba lajkování:", e);
+          }
+        }
+      },
+      dislikePost: async (postavaId) => {
+        if (!db) return;
+        const docRef = doc(db, "likes", postavaId);
+        try {
+          await updateDoc(docRef, { dislikes: increment(1) });
+        } catch (e) {
+          if (e.code === 'not-found') {
+            await setDoc(docRef, { likes: 0, dislikes: 1 });
+          } else {
+            console.error("Chyba dislajkování:", e);
+          }
+        }
       },
       listenLikes: (postavaId, callback) => {
         if (!db) return;
@@ -152,7 +169,7 @@
           </a>
         `;
 
-        // === Lajky + Dislajky s toggle (přidat/odebrat) ===
+        // === Lajky + Dislajky (bez limitu, jen přidávání) ===
         const postavaId = f.thumb.split('/').pop().split('.')[0] ||
                           f.full.split('/').pop().split('.')[0] ||
                           'neznama';
@@ -163,7 +180,7 @@
         likeContainer.style.justifyContent = 'center';
         likeContainer.style.gap = '20px';
 
-        // Lajk tlačítko
+        // Lajk tlačítko (jen ❤️ + počet)
         const likeButton = document.createElement('button');
         likeButton.innerHTML = '❤️';
         likeButton.style.background = 'transparent';
@@ -179,7 +196,7 @@
         likeButton.appendChild(likeCount);
         likeContainer.appendChild(likeButton);
 
-        // Dislajk tlačítko
+        // Dislajk tlačítko (jen 👎 + počet)
         const dislikeButton = document.createElement('button');
         dislikeButton.innerHTML = '👎';
         dislikeButton.style.background = 'transparent';
@@ -195,23 +212,13 @@
         dislikeButton.appendChild(dislikeCount);
         likeContainer.appendChild(dislikeButton);
 
-        // Kliky s toggle (přidat/odebrat)
-        likeButton.onclick = async () => {
-          if (window.likeFunctions && db) {
-            const docRef = doc(db, "likes", postavaId);
-            const snap = await getDoc(docRef);
-            const current = snap.exists() ? (snap.data().likes || 0) : 0;
-            await updateDoc(docRef, { likes: increment(current > 0 ? -1 : 1) });
-          }
+        // Kliky – přidávají +1 (bez odebrání)
+        likeButton.onclick = () => {
+          if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
         };
 
-        dislikeButton.onclick = async () => {
-          if (window.likeFunctions && db) {
-            const docRef = doc(db, "likes", postavaId);
-            const snap = await getDoc(docRef);
-            const current = snap.exists() ? (snap.data().dislikes || 0) : 0;
-            await updateDoc(docRef, { dislikes: increment(current > 0 ? -1 : 1) });
-          }
+        dislikeButton.onclick = () => {
+          if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
         };
 
         // Real-time aktualizace
