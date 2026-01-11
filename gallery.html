@@ -70,6 +70,41 @@
   </style>
   <!-- Adsterra Popunder + Social Bar -->
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
+  <!-- Firebase SDK – modularní verze přes CDN (funguje bez bundleru) -->
+<script type="module">
+  // Importy fungují jen v type="module"
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  // Tvůj config (zkopírovaný z Firebase konzole)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAOUcva0oduASghABPVbZIDFSF87cBDdXU",
+    authDomain: "lajky-79446.firebaseapp.com",
+    projectId: "lajky-79446",
+    storageBucket: "lajky-79446.firebasestorage.app",
+    messagingSenderId: "515757817032",
+    appId: "1:515757817032:web:2fac04b37e0f266352b9fd",
+    measurementId: "G-EXFFQM5WW5"
+  };
+
+  // Inicializace
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Automaticky přihlásit anonymně při načtení stránky
+  signInAnonymously(auth)
+    .then(() => console.log("Anonymně přihlášen"))
+    .catch(error => console.error("Chyba přihlášení:", error));
+
+  // Globálně dostupné pro použití v renderPage
+  window.db = db;  // Abychom mohli používat db v jiných funkcích
+  window.doc = doc;
+  window.getDoc = getDoc;
+  window.updateDoc = updateDoc;
+  window.increment = increment;
+</script>
 </head>
 <body>
   <!-- Logo -->
@@ -177,6 +212,51 @@
           </a>
         `;
         gallery.appendChild(item);
+
+        // Uvnitř forEach – pro každou položku/postavu
+const postavaId = f.thumb.split('/').pop().split('.')[0] || f.full.split('/').pop().split('.')[0] || 'neznama';  // Jednoduchý unikátní ID z URL (např. nasta.theruss)
+
+const likeContainer = document.createElement('div');
+likeContainer.style.marginTop = '8px';
+likeContainer.style.fontSize = '14px';
+likeContainer.style.color = '#ff3366';
+
+const likeButton = document.createElement('button');
+likeButton.innerHTML = '❤️ Lajk';
+likeButton.style.background = 'transparent';
+likeButton.style.border = 'none';
+likeButton.style.cursor = 'pointer';
+likeButton.style.fontSize = '16px';
+likeButton.style.color = '#ff3366';
+
+const likeCount = document.createElement('span');
+likeCount.innerText = ' 0';
+likeCount.className = 'like-count';
+
+likeButton.appendChild(likeCount);
+likeContainer.appendChild(likeButton);
+
+// Při kliku přičti lajk
+likeButton.onclick = async () => {
+  const docRef = doc(window.db, "likes", postavaId);
+  try {
+    await updateDoc(docRef, {
+      count: increment(1)
+    });
+  } catch (e) {
+    // Pokud dokument neexistuje → vytvoř ho s 1
+    await setDoc(docRef, { count: 1 });
+  }
+};
+
+// Real-time načítání počtu lajků
+onSnapshot(doc(window.db, "likes", postavaId), (docSnap) => {
+  const count = docSnap.exists() ? docSnap.data().count : 0;
+  likeCount.innerText = ` ${count}`;
+});
+
+// Přidej do item (např. pod name)
+item.appendChild(likeContainer);
       });
     }
 
