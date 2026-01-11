@@ -51,22 +51,14 @@
 
     window.likeFunctions = {
       toggleLike: async (postavaId, type) => {  // type: 'likes' nebo 'dislikes'
-        if (!db) return;
+        if (!db) return console.error("DB není připravené");
         const docRef = doc(db, "likes", postavaId);
         const snap = await getDoc(docRef);
         const data = snap.exists() ? snap.data() : { likes: 0, dislikes: 0 };
-
         const current = data[type] || 0;
 
-        if (current > 0) {
-          // Odebrat
-          await updateDoc(docRef, { [type]: increment(-1) });
-        } else {
-          // Přidat
-          await updateDoc(docRef, { [type]: increment(1) });
-        }
+        await updateDoc(docRef, { [type]: increment(current > 0 ? -1 : 1) });
       },
-
       listenLikes: (postavaId, callback) => {
         if (!db) return;
         const docRef = doc(db, "likes", postavaId);
@@ -203,18 +195,13 @@
         dislikeButton.appendChild(dislikeCount);
         likeContainer.appendChild(dislikeButton);
 
-        // Kliky s toggle
+        // Kliky s toggle (přidat/odebrat)
         likeButton.onclick = async () => {
           if (window.likeFunctions && db) {
             const docRef = doc(db, "likes", postavaId);
             const snap = await getDoc(docRef);
             const current = snap.exists() ? (snap.data().likes || 0) : 0;
-
-            if (current > 0) {
-              await updateDoc(docRef, { likes: increment(-1) });
-            } else {
-              await updateDoc(docRef, { likes: increment(1) });
-            }
+            await updateDoc(docRef, { likes: increment(current > 0 ? -1 : 1) });
           }
         };
 
@@ -223,12 +210,7 @@
             const docRef = doc(db, "likes", postavaId);
             const snap = await getDoc(docRef);
             const current = snap.exists() ? (snap.data().dislikes || 0) : 0;
-
-            if (current > 0) {
-              await updateDoc(docRef, { dislikes: increment(-1) });
-            } else {
-              await updateDoc(docRef, { dislikes: increment(1) });
-            }
+            await updateDoc(docRef, { dislikes: increment(current > 0 ? -1 : 1) });
           }
         };
 
