@@ -128,9 +128,9 @@
           const full = lines[i + 1]?.trim() || '';
           if (full) allPhotos.push({ thumb, full });
         }
-        document.getElementById('postava-name').textContent = 
-          allPhotos.length === 0 
-            ? id + ' - žádné položky' 
+        document.getElementById('postava-name').textContent =
+          allPhotos.length === 0
+            ? id + ' - žádné položky'
             : id + ' - ' + allPhotos.length + ' položek';
         renderPage(currentPage);
         renderPagination();
@@ -170,8 +170,8 @@
         `;
 
         // === Lajky + Dislajky ===
-        const postavaId = f.thumb.split('/').pop().split('.')[0] || 
-                          f.full.split('/').pop().split('.')[0] || 
+        const postavaId = f.thumb.split('/').pop().split('.')[0] ||
+                          f.full.split('/').pop().split('.')[0] ||
                           'neznama';
 
         const likeContainer = document.createElement('div');
@@ -180,34 +180,34 @@
         likeContainer.style.justifyContent = 'center';
         likeContainer.style.gap = '20px';
 
-        // Lajk tlačítko
+        // Lajk tlačítko (jen ❤️ + počet)
         const likeButton = document.createElement('button');
         likeButton.innerHTML = '❤️';
         likeButton.style.background = 'transparent';
         likeButton.style.border = 'none';
         likeButton.style.cursor = 'pointer';
-        likeButton.style.fontSize = '16px';
+        likeButton.style.fontSize = '24px';
         likeButton.style.color = '#ff3366';
 
         const likeCount = document.createElement('span');
         likeCount.innerText = ' 0';
-        likeCount.style.marginLeft = '2px';
+        likeCount.style.marginLeft = '4px';
 
         likeButton.appendChild(likeCount);
         likeContainer.appendChild(likeButton);
 
-        // Dislajk tlačítko
+        // Dislajk tlačítko (jen 👎 + počet)
         const dislikeButton = document.createElement('button');
         dislikeButton.innerHTML = '👎';
         dislikeButton.style.background = 'transparent';
         dislikeButton.style.border = 'none';
         dislikeButton.style.cursor = 'pointer';
-        dislikeButton.style.fontSize = '16px';
+        dislikeButton.style.fontSize = '24px';
         dislikeButton.style.color = '#ff3366';
 
         const dislikeCount = document.createElement('span');
         dislikeCount.innerText = ' 0';
-        dislikeCount.style.marginLeft = '2px';
+        dislikeCount.style.marginLeft = '4px';
 
         dislikeButton.appendChild(dislikeCount);
         likeContainer.appendChild(dislikeButton);
