@@ -222,12 +222,13 @@
         likeButton.style.background = 'transparent';
         likeButton.style.border = 'none';
         likeButton.style.cursor = 'pointer';
-        likeButton.style.fontSize = '16px';
+        likeButton.style.fontSize = '24px';
         likeButton.style.color = '#ff3366';
 
         const likeCount = document.createElement('span');
         likeCount.innerText = ' 0';
         likeCount.className = 'like-count';
+        likeCount.style.marginLeft = '4px';
 
         likeButton.appendChild(likeCount);
         likeContainer.appendChild(likeButton);
