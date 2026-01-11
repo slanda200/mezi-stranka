@@ -178,7 +178,7 @@
         likeContainer.style.marginTop = '8px';
         likeContainer.style.display = 'flex';
         likeContainer.style.justifyContent = 'center';
-        likeContainer.style.gap = '20px';
+        likeContainer.style.gap = '10px';
 
         // Lajk tlačítko (jen ❤️ + počet)
         const likeButton = document.createElement('button');
@@ -186,12 +186,12 @@
         likeButton.style.background = 'transparent';
         likeButton.style.border = 'none';
         likeButton.style.cursor = 'pointer';
-        likeButton.style.fontSize = '24px';
+        likeButton.style.fontSize = '16px';
         likeButton.style.color = '#ff3366';
 
         const likeCount = document.createElement('span');
         likeCount.innerText = ' 0';
-        likeCount.style.marginLeft = '4px';
+        likeCount.style.marginLeft = '2px';
 
         likeButton.appendChild(likeCount);
         likeContainer.appendChild(likeButton);
@@ -202,12 +202,12 @@
         dislikeButton.style.background = 'transparent';
         dislikeButton.style.border = 'none';
         dislikeButton.style.cursor = 'pointer';
-        dislikeButton.style.fontSize = '24px';
+        dislikeButton.style.fontSize = '16px';
         dislikeButton.style.color = '#ff3366';
 
         const dislikeCount = document.createElement('span');
         dislikeCount.innerText = ' 0';
-        dislikeCount.style.marginLeft = '4px';
+        dislikeCount.style.marginLeft = '2px';
 
         dislikeButton.appendChild(dislikeCount);
         likeContainer.appendChild(dislikeButton);
