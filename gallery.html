@@ -30,7 +30,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { getFirestore, doc, updateDoc, setDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getFirestore, doc, updateDoc, setDoc, increment, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAOUcva0oduASghABPVbZIDFSF87cBDdXU",
@@ -51,31 +51,14 @@
       .catch(error => console.error("Chyba přihlášení:", error.message));
 
     window.likeFunctions = {
-      likePost: async (postavaId) => {
-        if (!db) return;
+      toggleLike: async (postavaId, type) => {  // type: 'likes' nebo 'dislikes'
+        if (!db) return console.error("DB není připravené");
         const docRef = doc(db, "likes", postavaId);
-        try {
-          await updateDoc(docRef, { likes: increment(1) });
-        } catch (e) {
-          if (e.code === 'not-found') {
-            await setDoc(docRef, { likes: 1, dislikes: 0 });
-          } else {
-            console.error("Chyba lajkování:", e);
-          }
-        }
-      },
-      dislikePost: async (postavaId) => {
-        if (!db) return;
-        const docRef = doc(db, "likes", postavaId);
-        try {
-          await updateDoc(docRef, { dislikes: increment(1) });
-        } catch (e) {
-          if (e.code === 'not-found') {
-            await setDoc(docRef, { likes: 0, dislikes: 1 });
-          } else {
-            console.error("Chyba dislajkování:", e);
-          }
-        }
+        const snap = await getDoc(docRef);
+        const data = snap.exists() ? snap.data() : { likes: 0, dislikes: 0 };
+        const current = data[type] || 0;
+
+        await updateDoc(docRef, { [type]: increment(current > 0 ? -1 : 1) });
       },
       listenLikes: (postavaId, callback) => {
         if (!db) return;
@@ -99,7 +82,7 @@
 
   <h1 id="postava-name">Načítání galerie...</h1>
 
-  <!-- NOVÝ TEXT: "Chtěli byste více contentu?" – jen jednou pod názvem postavy -->
+  <!-- Text "Chtěli byste více contentu?" – jen jednou pod názvem postavy -->
   <div id="more-content-container" style="margin-top: 10px; font-size: 16px; color: #aaa; display: flex; justify-content: center; align-items: center; gap: 10px;">
     Chtěli byste více contentu?
     <button id="more-like-btn" style="background:transparent; border:none; cursor:pointer; font-size:20px; color:#ff3366; padding:0; margin:0 4px;">❤️</button>
@@ -129,13 +112,13 @@
 
     document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
 
-    // Připoj lajk/dislaik k novému textu pod názvem (používáme id postavy)
+    // Připoj lajk/dislaik k textu pod názvem postavy
     document.getElementById('more-like-btn').onclick = () => {
-      if (window.likeFunctions) window.likeFunctions.likePost(id);
+      if (window.likeFunctions) window.likeFunctions.toggleLike(id, 'likes');
     };
 
     document.getElementById('more-dislike-btn').onclick = () => {
-      if (window.likeFunctions) window.likeFunctions.dislikePost(id);
+      if (window.likeFunctions) window.likeFunctions.toggleLike(id, 'dislikes');
     };
 
     fetch(`postavy/${id}.txt`)
@@ -192,7 +175,7 @@
           </a>
         `;
 
-        // === Lajky + Dislajky (bez limitu, jen přidávání) ===
+        // === Lajky + Dislajky (s toggle – přidat/odebrat) ===
         const postavaId = f.thumb.split('/').pop().split('.')[0] ||
                           f.full.split('/').pop().split('.')[0] ||
                           'neznama';
@@ -234,11 +217,15 @@
         likeContainer.appendChild(dislikeButton);
 
         likeButton.onclick = () => {
-          if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
+          if (window.likeFunctions && db) {
+            window.likeFunctions.toggleLike(postavaId, 'likes');
+          }
         };
 
         dislikeButton.onclick = () => {
-          if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
+          if (window.likeFunctions && db) {
+            window.likeFunctions.toggleLike(postavaId, 'dislikes');
+          }
         };
 
         if (window.likeFunctions) {
@@ -249,6 +236,7 @@
         }
 
         item.appendChild(likeContainer);
+
         gallery.appendChild(item);
       });
     }
