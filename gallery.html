@@ -170,70 +170,117 @@
           </a>
         `;
 
-        // === Lajky + Dislajky (bez limitu, jen přidávání) ===
-        const postavaId = f.thumb.split('/').pop().split('.')[0] ||
-                          f.full.split('/').pop().split('.')[0] ||
-                          'neznama';
+// === Lajky + Dislajky (bez limitu, jen přidávání) ===
+const postavaId = f.thumb.split('/').pop().split('.')[0] ||
+                  f.full.split('/').pop().split('.')[0] ||
+                  'neznama';
 
-        const likeContainer = document.createElement('div');
-        likeContainer.style.marginTop = '8px';
-        likeContainer.style.display = 'flex';
-        likeContainer.style.justifyContent = 'center';
-        likeContainer.style.gap = '10px';
+const likeContainer = document.createElement('div');
+likeContainer.style.marginTop = '8px';
+likeContainer.style.display = 'flex';
+likeContainer.style.justifyContent = 'center';
+likeContainer.style.gap = '10px';
 
-        // Lajk tlačítko (jen ❤️ + počet)
-        const likeButton = document.createElement('button');
-        likeButton.innerHTML = '❤️';
-        likeButton.style.background = 'transparent';
-        likeButton.style.border = 'none';
-        likeButton.style.cursor = 'pointer';
-        likeButton.style.fontSize = '16px';
-        likeButton.style.color = '#ff3366';
+// Lajk tlačítko (jen ❤️ + počet)
+const likeButton = document.createElement('button');
+likeButton.innerHTML = '❤️';
+likeButton.style.background = 'transparent';
+likeButton.style.border = 'none';
+likeButton.style.cursor = 'pointer';
+likeButton.style.fontSize = '16px';
+likeButton.style.color = '#ff3366';
 
-        const likeCount = document.createElement('span');
-        likeCount.innerText = ' 0';
-        likeCount.style.marginLeft = '2px';
+const likeCount = document.createElement('span');
+likeCount.innerText = ' 0';
+likeCount.style.marginLeft = '2px';
 
-        likeButton.appendChild(likeCount);
-        likeContainer.appendChild(likeButton);
+likeButton.appendChild(likeCount);
+likeContainer.appendChild(likeButton);
 
-        // Dislajk tlačítko (jen 👎 + počet)
-        const dislikeButton = document.createElement('button');
-        dislikeButton.innerHTML = '👎';
-        dislikeButton.style.background = 'transparent';
-        dislikeButton.style.border = 'none';
-        dislikeButton.style.cursor = 'pointer';
-        dislikeButton.style.fontSize = '16px';
-        dislikeButton.style.color = '#ff3366';
+// Dislajk tlačítko (jen 👎 + počet)
+const dislikeButton = document.createElement('button');
+dislikeButton.innerHTML = '👎';
+dislikeButton.style.background = 'transparent';
+dislikeButton.style.border = 'none';
+dislikeButton.style.cursor = 'pointer';
+dislikeButton.style.fontSize = '16px';
+dislikeButton.style.color = '#ff3366';
 
-        const dislikeCount = document.createElement('span');
-        dislikeCount.innerText = ' 0';
-        dislikeCount.style.marginLeft = '2px';
+const dislikeCount = document.createElement('span');
+dislikeCount.innerText = ' 0';
+dislikeCount.style.marginLeft = '2px';
 
-        dislikeButton.appendChild(dislikeCount);
-        likeContainer.appendChild(dislikeButton);
+dislikeButton.appendChild(dislikeCount);
+likeContainer.appendChild(dislikeButton);
 
-        // Kliky – přidávají +1 (bez odebrání)
-        likeButton.onclick = () => {
-          if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
-        };
+// Kliky – přidávají +1 (bez odebrání)
+likeButton.onclick = () => {
+  if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
+};
 
-        dislikeButton.onclick = () => {
-          if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
-        };
+dislikeButton.onclick = () => {
+  if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
+};
 
-        // Real-time aktualizace
-        if (window.likeFunctions) {
-          window.likeFunctions.listenLikes(postavaId, (data) => {
-            likeCount.innerText = ` ${data.likes || 0}`;
-            dislikeCount.innerText = ` ${data.dislikes || 0}`;
-          });
-        }
+// Real-time aktualizace
+if (window.likeFunctions) {
+  window.likeFunctions.listenLikes(postavaId, (data) => {
+    likeCount.innerText = ` ${data.likes || 0}`;
+    dislikeCount.innerText = ` ${data.dislikes || 0}`;
+  });
+}
 
-        item.appendChild(likeContainer);
-        // === konec lajků + dislajků ===
+item.appendChild(likeContainer);
 
-        gallery.appendChild(item);
+// === NOVÝ: "Chtěli byste více contentu?" + malé lajk/dislaik ===
+const moreContentContainer = document.createElement('div');
+moreContentContainer.style.marginTop = '6px';
+moreContentContainer.style.fontSize = '13px';
+moreContentContainer.style.color = '#aaa';
+moreContentContainer.style.display = 'flex';
+moreContentContainer.style.justifyContent = 'center';
+moreContentContainer.style.alignItems = 'center';
+moreContentContainer.style.gap = '8px';
+
+const text = document.createTextNode('Chtěli byste více contentu? ');
+moreContentContainer.appendChild(text);
+
+// Malé lajk tlačítko pro "více contentu"
+const smallLikeButton = document.createElement('button');
+smallLikeButton.innerHTML = '❤️';
+smallLikeButton.style.background = 'transparent';
+smallLikeButton.style.border = 'none';
+smallLikeButton.style.cursor = 'pointer';
+smallLikeButton.style.fontSize = '18px';
+smallLikeButton.style.color = '#ff3366';
+smallLikeButton.style.padding = '0';
+smallLikeButton.style.margin = '0 2px';
+
+smallLikeButton.onclick = () => {
+  if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
+};
+
+moreContentContainer.appendChild(smallLikeButton);
+
+// Malé dislajk tlačítko pro "více contentu"
+const smallDislikeButton = document.createElement('button');
+smallDislikeButton.innerHTML = '👎';
+smallDislikeButton.style.background = 'transparent';
+smallDislikeButton.style.border = 'none';
+smallDislikeButton.style.cursor = 'pointer';
+smallDislikeButton.style.fontSize = '18px';
+smallDislikeButton.style.color = '#ff3366';
+smallDislikeButton.style.padding = '0';
+smallDislikeButton.style.margin = '0 2px';
+
+smallDislikeButton.onclick = () => {
+  if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
+};
+
+moreContentContainer.appendChild(smallDislikeButton);
+
+item.appendChild(moreContentContainer);
+// === konec nového textu ===
       });
     }
 
