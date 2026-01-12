@@ -13,6 +13,7 @@ rosenicol
 neroli
 angelina
 tvaginger.osladinda
+De.Athene
 
 # Worldwide postavy
 viktoriakpa
