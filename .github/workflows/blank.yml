@@ -1,0 +1,24 @@
+name: Aktualizace galerie - nasta.theruss v 22:00 CET
+
+on:
+  schedule:
+    - cron: '0 21 * * *'   # 22:00 CET = 21:00 UTC (zimní čas)
+
+jobs:
+  update-nasta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repozitáře
+        uses: actions/checkout@v4
+
+      - name: Aktualizovat soubor v 22:00
+        run: |
+          cp pripravene/nasta.theruss-10hod.txt postavy/nasta.theruss.txt
+
+      - name: Commit a push změny
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add postavy/nasta.theruss.txt
+          git commit -m "Automatický update nasta.theruss - 22:00 CET (10 večer)"
+          git push
