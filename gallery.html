@@ -24,7 +24,7 @@
     .pagination button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
   </style>
   <!-- Adsterra Popunder + Social Bar -->
-<script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
+  <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
@@ -50,13 +50,12 @@
       .catch(error => console.error("Chyba přihlášení:", error.message));
 
     window.likeFunctions = {
-      toggleLike: async (postavaId, type) => {  // type: 'likes' nebo 'dislikes'
+      toggleLike: async (postavaId, type) => {
         if (!db) return console.error("DB není připravené");
         const docRef = doc(db, "likes", postavaId);
         const snap = await getDoc(docRef);
         const data = snap.exists() ? snap.data() : { likes: 0, dislikes: 0 };
         const current = data[type] || 0;
-
         await updateDoc(docRef, { [type]: increment(current > 0 ? -1 : 1) });
       },
       listenLikes: (postavaId, callback) => {
@@ -77,14 +76,16 @@
       <img src="logo.png" alt="QuickPic Logo" class="logo-img" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
     </a>
   </div>
-  <div class="warning">⚠️  18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
+  <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
 
   <h1 id="postava-name">Načítání galerie...</h1>
 
   <!-- Text "Chtěli byste více contentu?" – jen jednou pod názvem postavy -->
   <div id="more-content-container" style="margin-top: 10px; font-size: 16px; color: #aaa; display: flex; justify-content: center; align-items: center; gap: 10px;">
     Chtěli byste více contentu?
+    <span id="more-like-count" style="margin: 0 4px; font-size: 18px; color: #ff3366;">0</span>
     <button id="more-like-btn" style="background:transparent; border:none; cursor:pointer; font-size:20px; color:#ff3366; padding:0; margin:0 4px;">❤️</button>
+    <span id="more-dislike-count" style="margin: 0 4px; font-size: 18px; color: #ff3366;">0</span>
     <button id="more-dislike-btn" style="background:transparent; border:none; cursor:pointer; font-size:20px; color:#ff3366; padding:0; margin:0 4px;">👎</button>
   </div>
 
@@ -111,7 +112,15 @@
 
     document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
 
-    // Připoj lajk/dislaik k textu pod názvem postavy
+    // Real-time počty pro text pod názvem postavy (celkové lajky/dislaiky postavy)
+    if (window.likeFunctions) {
+      window.likeFunctions.listenLikes(id, (data) => {
+        document.getElementById('more-like-count').textContent = data.likes || 0;
+        document.getElementById('more-dislike-count').textContent = data.dislikes || 0;
+      });
+    }
+
+    // Kliky pod názvem postavy
     document.getElementById('more-like-btn').onclick = () => {
       if (window.likeFunctions) window.likeFunctions.toggleLike(id, 'likes');
     };
@@ -215,6 +224,7 @@
         dislikeButton.appendChild(dislikeCount);
         likeContainer.appendChild(dislikeButton);
 
+        // Kliky s toggle (přidat/odebrat)
         likeButton.onclick = () => {
           if (window.likeFunctions && db) {
             window.likeFunctions.toggleLike(postavaId, 'likes');
@@ -227,6 +237,7 @@
           }
         };
 
+        // Real-time aktualizace počtů
         if (window.likeFunctions) {
           window.likeFunctions.listenLikes(postavaId, (data) => {
             likeCount.innerText = ` ${data.likes || 0}`;
@@ -235,7 +246,6 @@
         }
 
         item.appendChild(likeContainer);
-
         gallery.appendChild(item);
       });
     }
