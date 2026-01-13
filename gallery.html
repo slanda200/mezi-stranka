@@ -112,7 +112,7 @@
 
   document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
 
-  // Real-time počty pro celou postavu (pod názvem)
+  // Globální počty pod názvem postavy (celkové pro postavu)
   if (window.likeFunctions) {
     window.likeFunctions.listenLikes(id, (data) => {
       document.getElementById('more-like-count').textContent = data.likes || 0;
@@ -120,13 +120,13 @@
     });
   }
 
-  // Kliky pod názvem postavy
+  // Kliky pod názvem postavy (přidávají +1, bez toggle – jako dřív)
   document.getElementById('more-like-btn').onclick = () => {
-    if (window.likeFunctions) window.likeFunctions.toggleLike(id, 'likes');
+    if (window.likeFunctions) window.likeFunctions.likePost(id);
   };
 
   document.getElementById('more-dislike-btn').onclick = () => {
-    if (window.likeFunctions) window.likeFunctions.toggleLike(id, 'dislikes');
+    if (window.likeFunctions) window.likeFunctions.dislikePost(id);
   };
 
   fetch(`postavy/${id}.txt`)
@@ -183,7 +183,7 @@
         </a>
       `;
 
-      // === Lajky + Dislajky ===
+      // === Lajky + Dislajky pod fotkou (jen přidávání +1, jako dřív) ===
       const postavaId = f.thumb.split('/').pop().split('.')[0] ||
                         f.full.split('/').pop().split('.')[0] ||
                         'neznama';
@@ -224,17 +224,13 @@
       dislikeButton.appendChild(dislikeCount);
       likeContainer.appendChild(dislikeButton);
 
-      // Kliky s toggle
+      // Kliky – jen přidávají +1 (jako před toggle)
       likeButton.onclick = () => {
-        if (window.likeFunctions && db) {
-          window.likeFunctions.toggleLike(postavaId, 'likes');
-        }
+        if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
       };
 
       dislikeButton.onclick = () => {
-        if (window.likeFunctions && db) {
-          window.likeFunctions.toggleLike(postavaId, 'dislikes');
-        }
+        if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
       };
 
       // Real-time aktualizace počtů pod fotkou
