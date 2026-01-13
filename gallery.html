@@ -51,7 +51,7 @@
 
     window.likeFunctions = {
       likePost: async (postavaId) => {
-        if (!db) return console.error("DB není připravené");
+        if (!db) return;
         const docRef = doc(db, "likes", postavaId);
         try {
           await updateDoc(docRef, { likes: increment(1) });
@@ -64,7 +64,7 @@
         }
       },
       dislikePost: async (postavaId) => {
-        if (!db) return console.error("DB není připravené");
+        if (!db) return;
         const docRef = doc(db, "likes", postavaId);
         try {
           await updateDoc(docRef, { dislikes: increment(1) });
@@ -95,9 +95,7 @@
     </a>
   </div>
   <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
-
   <h1 id="postava-name">Načítání galerie...</h1>
-
   <!-- Text "Chtěli byste více contentu?" – jen jednou pod názvem postavy -->
   <div id="more-content-container" style="margin-top: 10px; font-size: 16px; color: #aaa; display: flex; justify-content: center; align-items: center; gap: 10px;">
     Chtěli byste více contentu?
@@ -106,48 +104,37 @@
     <span id="more-dislike-count" style="margin: 0 4px; font-size: 18px; color: #ff3366;">0</span>
     <button id="more-dislike-btn" style="background:transparent; border:none; cursor:pointer; font-size:20px; color:#ff3366; padding:0; margin:0 4px;">👎</button>
   </div>
-
   <!-- Reklama nahoře -->
   <div class="ad-banner"></div>
   <script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
-
   <div class="gallery" id="gallery"></div>
-
   <!-- Paginace -->
   <div class="pagination" id="pagination"></div>
-
   <!-- Reklama dole -->
   <div class="ad-banner"></div>
   <a href="index.html">Zpět na výběr</a>
-
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id') || 'nasta.theruss';
     const photosPerPage = 20;
     let currentPage = 1;
     let allPhotos = [];
-
     document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
-
     // Globální počty pod názvem postavy (celkové pro postavu)
     if (window.likeFunctions) {
       window.likeFunctions.listenLikes(id, (data) => {
         document.getElementById('more-like-count').textContent = data.likes || 0;
         document.getElementById('more-dislike-count').textContent = data.dislikes || 0;
-        console.log("Globální aktualizace: ❤️" + (data.likes || 0) + " 👎" + (data.dislikes || 0));
       });
     }
-
-    // Kliky pod názvem postavy (jen přidávají +1, jako dřív)
+    // Kliky pod názvem postavy (přidávají +1, bez toggle – jako dřív)
     document.getElementById('more-like-btn').onclick = () => {
       if (window.likeFunctions) window.likeFunctions.likePost(id);
     };
-
     document.getElementById('more-dislike-btn').onclick = () => {
       if (window.likeFunctions) window.likeFunctions.dislikePost(id);
     };
-
     fetch(`postavy/${id}.txt`)
       .then(response => {
         if (!response.ok) throw new Error(`Soubor nenalezen (status ${response.status})`);
@@ -169,10 +156,9 @@
         renderPagination();
       })
       .catch(err => {
-        console.error('Chyba fetch:', err);
+        console.error('Chyba:', err);
         document.getElementById('postava-name').textContent = 'Postava nenalezena – zkontroluj soubor postavy/' + id + '.txt';
       });
-
     function renderPage(page) {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
@@ -180,20 +166,16 @@
       const start = (page - 1) * photosPerPage;
       const end = Math.min(start + photosPerPage, allPhotos.length);
       const pagePhotos = allPhotos.slice(start, end);
-
       pagePhotos.forEach(f => {
         const isVideo = /\.(mp4|webm|mov)$/i.test(f.full);
         let thumbSrc = f.thumb || UNIVERSAL_VIDEO_THUMB;
         if (!thumbSrc) thumbSrc = "placeholder.jpg";
-
         const item = document.createElement('div');
         item.className = 'item';
-
         let playIcon = '';
         if (isVideo) {
           playIcon = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:#ff3366; text-shadow:0 0 12px black; pointer-events:none; opacity:0.9;">▶</div>';
         }
-
         item.innerHTML = `
           <a href="redirect.html?url=${encodeURIComponent(f.full)}" target="_blank" rel="noopener" style="position:relative; display:block;">
             <img src="${thumbSrc}" alt="${isVideo ? 'Video' : 'Fotka'}" loading="lazy">
@@ -201,18 +183,15 @@
             <div class="name">Klikni pro ${isVideo ? 'VIDEO 🔥' : 'full'}</div>
           </a>
         `;
-
         // === Lajky + Dislajky pod fotkou ===
         const postavaId = f.thumb.split('/').pop().split('.')[0] ||
                           f.full.split('/').pop().split('.')[0] ||
-                          id; // fallback na id postavy
-
+                          id; // fallback na id postavy, když thumbnail nemá unikátní jméno
         const likeContainer = document.createElement('div');
         likeContainer.style.marginTop = '8px';
         likeContainer.style.display = 'flex';
         likeContainer.style.justifyContent = 'center';
         likeContainer.style.gap = '10px';
-
         const likeButton = document.createElement('button');
         likeButton.innerHTML = '❤️';
         likeButton.style.background = 'transparent';
@@ -220,45 +199,31 @@
         likeButton.style.cursor = 'pointer';
         likeButton.style.fontSize = '16px';
         likeButton.style.color = '#ff3366';
-
         const likeCount = document.createElement('span');
         likeCount.innerText = ' 0';
         likeCount.style.marginLeft = '2px';
-
         likeButton.appendChild(likeCount);
         likeContainer.appendChild(likeButton);
-
         const dislikeButton = document.createElement('button');
         dislikeButton.innerHTML = '👎';
         dislikeButton.style.background = 'transparent';
-        dislikeButton.style.border = 'none';
+        likeButton.style.border = 'none';
         dislikeButton.style.cursor = 'pointer';
         dislikeButton.style.fontSize = '16px';
         dislikeButton.style.color = '#ff3366';
-
         const dislikeCount = document.createElement('span');
         dislikeCount.innerText = ' 0';
         dislikeCount.style.marginLeft = '2px';
-
         dislikeButton.appendChild(dislikeCount);
         likeContainer.appendChild(dislikeButton);
-
-        // Kliky – jen přidávají +1 (jako před toggle)
         likeButton.onclick = () => {
-          if (window.likeFunctions) {
-            window.likeFunctions.likePost(postavaId);
-            console.log("Lajk přidán pro ID: " + postavaId);
-          }
+          if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
+          console.log("Lajk přidán pro ID: " + postavaId); // log pro kontrolu
         };
-
         dislikeButton.onclick = () => {
-          if (window.likeFunctions) {
-            window.likeFunctions.dislikePost(postavaId);
-            console.log("Dislajk přidán pro ID: " + postavaId);
-          }
+          if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
+          console.log("Dislajk přidán pro ID: " + postavaId);
         };
-
-        // Real-time aktualizace počtů pod fotkou
         if (window.likeFunctions) {
           window.likeFunctions.listenLikes(postavaId, (data) => {
             likeCount.innerText = ` ${data.likes || 0}`;
@@ -266,12 +231,10 @@
             console.log("Aktualizováno pro ID " + postavaId + ": ❤️" + (data.likes || 0) + " 👎" + (data.dislikes || 0));
           });
         }
-
         item.appendChild(likeContainer);
         gallery.appendChild(item);
       });
     }
-
     function renderPagination() {
       const pagination = document.getElementById('pagination');
       pagination.innerHTML = '';
@@ -287,11 +250,9 @@
         }
       };
       pagination.appendChild(prev);
-
       let startPage = Math.max(1, currentPage - 2);
       let endPage = Math.min(totalPages, startPage + 4);
       if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
-
       for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
@@ -303,7 +264,6 @@
         };
         pagination.appendChild(btn);
       }
-
       const next = document.createElement('button');
       next.textContent = 'Další ▶';
       next.disabled = currentPage === totalPages;
@@ -316,7 +276,6 @@
       };
       pagination.appendChild(next);
     }
-
     function updatePagination() {
       const buttons = document.querySelectorAll('.pagination button');
       buttons.forEach(btn => {
