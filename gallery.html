@@ -124,6 +124,12 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id') || 'nasta.theruss';
+    // Manuálně pošleme pageview s id postavy v URL (pro Plausible)
+if (window.plausible) {
+  const customPath = '/gallery.html/' + id;  // např. /gallery.html/nasta.theruss
+  plausible('pageview', { url: location.origin + customPath });
+  console.log("Plausible manuálně poslal: " + customPath); // pro kontrolu v konzoli
+}
     const photosPerPage = 20;
     let currentPage = 1;
     let allPhotos = [];
