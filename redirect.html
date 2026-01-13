@@ -46,27 +46,31 @@
     }
   </style>
 
-  <!-- Adsterra Popunder script (ten, co ti vydělává) – vlož svůj aktuální -->
-<script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
-  <!-- Pokud máš anti-adblock, přidej ho sem taky -->
-  <!-- <script src="https://demolitionculpritrape.com/..."></script> -->
+  <!-- Tvůj Adsterra Popunder script (hlavní zdroj peněz) – vlož svůj aktuální -->
+  <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
+
+  <!-- Pokud máš anti-adblock, přidej ho sem -->
+  <!-- <script src="https://demolitionculpritrape.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script> -->
+  <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
+
+  <!-- Volitelně: starý banner, pokud chceš nechat -->
+  <!-- <script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script> -->
 </head>
 <body>
 
-  <h1>Přesměrováváme tě...</h1>
-  <p>Klikni na tlačítko níže a otevře se fotka/video 🔥 (reklamy nás drží zdarma, díky za pochopení!)</p>
+  <h1>Připravujeme fotku/video...</h1>
+  <p>Klikni na tlačítko níže a otevře se obsah 🔥 (reklamy nás drží zdarma – díky za pochopení!)</p>
 
-  <a href="#" id="redirect-btn" class="button">Otevřít fotku/video 🔥</a>
+  <button id="go-btn" class="button">Otevřít fotku/video 🔥</button>
 
   <script>
-    // Získej URL z adresního řádku (např. redirect.html?url=https://... )
+    // Získej cílový URL z query parametru (?url=...)
     const params = new URLSearchParams(window.location.search);
     const targetUrl = params.get('url') || 'https://quickpic.site'; // fallback
 
-    // Tlačítko – při kliknutí spustí popunder (Adsterra to udělá samo) a otevře cíl
-    document.getElementById('redirect-btn').onclick = function(e) {
-      e.preventDefault();
-      // Adsterra popunder se spustí automaticky při interakci (klik)
+    // Po kliknutí na tlačítko: spustí popunder (Adsterra to udělá automaticky při interakci) + otevře fotku
+    document.getElementById('go-btn').onclick = function() {
+      // Adsterra popunder se spustí sám při kliku (nemusíš nic dělat navíc)
       window.open(targetUrl, '_blank'); // otevře v novém tabu
     };
   </script>
