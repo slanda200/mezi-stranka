@@ -1,72 +1,75 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <link rel="icon" href="favicon.png" type="image/png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Načítání obsahu (18+)</title>
+  <title>Přesměrování...</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 60px 20px; background: #111; color: #fff; }
-    h2 { font-size: 28px; }
-    .timer { font-size: 32px; color: #ff4444; margin: 20px 0; }
-    .ad { margin: 30px auto; width: 100%; max-width: 400px; min-height: 250px; background: #222; border: 1px solid #444; padding: 10px; }
-    a { color: #00aaff; font-size: 18px; }
-    .warning { color: #ff6666; margin-bottom: 30px; }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #ff3366;
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+    .button {
+      background: #ff3366;
+      color: white;
+      padding: 18px 40px;
+      font-size: 22px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(255,51,102,0.5);
+    }
+    .button:hover {
+      background: #ff1a4d;
+      transform: scale(1.05);
+    }
   </style>
+
+  <!-- Adsterra Popunder script (ten, co ti vydělává) – vlož svůj aktuální -->
+<script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
+  <!-- Pokud máš anti-adblock, přidej ho sem taky -->
+  <!-- <script src="https://demolitionculpritrape.com/..."></script> -->
 </head>
 <body>
-<body>
-  <!-- Logo – střed vlevo, bez blur, oddělené od warningu -->
-  <div style="position: fixed; top: 20px; left: 5%; z-index: 999;">
-    <a href="index.html">
-      <img src="logo.png" alt="QuickPic Logo" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
-    </a>
-  </div>
 
-  <!-- Warning text – posunutý níže, aby logo nepřekrýval -->
-  <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
+  <h1>Přesměrováváme tě...</h1>
+  <p>Klikni na tlačítko níže a otevře se fotka/video 🔥 (reklamy nás drží zdarma, díky za pochopení!)</p>
 
-</body>
- 
-  <h2>Obsah se načítá...</h2>
-  <p>Za <span id="timer">10</span> sekund přesměrování na fotku</p>
- 
-  <!-- ADSTERRA POPUNDER (starý) -->
-<script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
- 
-  <!-- ADSTERRA SOCIAL BAR / INTERSTITIAL (nový) -->
-<script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
- 
-  <div class="ad">
+  <a href="#" id="redirect-btn" class="button">Otevřít fotku/video 🔥</a>
 
-<script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script>
-  </div>
- 
-  <p><a href="#" id="skip">Přejít hned (skip)</a></p>
- 
   <script>
-    let seconds = 10;
-    const timerEl = document.getElementById('timer');
-    const skipEl = document.getElementById('skip');
+    // Získej URL z adresního řádku (např. redirect.html?url=https://... )
     const params = new URLSearchParams(window.location.search);
-    const targetUrl = params.get('url') || 'https://example.com'; // fallback
+    const targetUrl = params.get('url') || 'https://quickpic.site'; // fallback
 
-    function countdown() {
-      timerEl.textContent = seconds;
-      if (seconds <= 0) {
-        window.location.href = targetUrl;
-      } else {
-        seconds--;
-        setTimeout(countdown, 1000);
-      }
-    }
-
-    skipEl.onclick = (e) => {
+    // Tlačítko – při kliknutí spustí popunder (Adsterra to udělá samo) a otevře cíl
+    document.getElementById('redirect-btn').onclick = function(e) {
       e.preventDefault();
-      window.location.href = targetUrl;
+      // Adsterra popunder se spustí automaticky při interakci (klik)
+      window.open(targetUrl, '_blank'); // otevře v novém tabu
     };
-
-    window.onload = countdown;
   </script>
+
 </body>
 </html>
