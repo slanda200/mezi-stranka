@@ -1,1 +1,8 @@
 
+name: Blank (disabled)
+on: []  # žádný trigger – nikdy se nespustí
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Tento workflow je vypnutý"
