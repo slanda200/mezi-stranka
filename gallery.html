@@ -163,89 +163,88 @@
     const pagePhotos = allPhotos.slice(start, end);
 
     pagePhotos.forEach(f => {
-      const isVideo = /\.(mp4|webm|mov)$/i.test(f.full);
-      let thumbSrc = f.thumb || UNIVERSAL_VIDEO_THUMB;
-      if (!thumbSrc) thumbSrc = "placeholder.jpg";
+  const isVideo = /\.(mp4|webm|mov)$/i.test(f.full);
+  let thumbSrc = f.thumb || UNIVERSAL_VIDEO_THUMB;
+  if (!thumbSrc) thumbSrc = "placeholder.jpg";
 
-      const item = document.createElement('div');
-      item.className = 'item';
+  const item = document.createElement('div');
+  item.className = 'item';
 
-      let playIcon = '';
-      if (isVideo) {
-        playIcon = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:#ff3366; text-shadow:0 0 12px black; pointer-events:none; opacity:0.9;">▶</div>';
-      }
+  let playIcon = '';
+  if (isVideo) {
+    playIcon = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:#ff3366; text-shadow:0 0 12px black; pointer-events:none; opacity:0.9;">▶</div>';
+  }
 
-      item.innerHTML = `
-        <a href="redirect.html?url=${encodeURIComponent(f.full)}" target="_blank" rel="noopener" style="position:relative; display:block;">
-          <img src="${thumbSrc}" alt="${isVideo ? 'Video' : 'Fotka'}" loading="lazy">
-          ${playIcon}
-          <div class="name">Klikni pro ${isVideo ? 'VIDEO 🔥' : 'full'}</div>
-        </a>
-      `;
+  item.innerHTML = `
+    <a href="redirect.html?url=${encodeURIComponent(f.full)}" target="_blank" rel="noopener" style="position:relative; display:block;">
+      <img src="${thumbSrc}" alt="${isVideo ? 'Video' : 'Fotka'}" loading="lazy">
+      ${playIcon}
+      <div class="name">Klikni pro ${isVideo ? 'VIDEO 🔥' : 'full'}</div>
+    </a>
+  `;
 
-      // === Lajky + Dislajky pod fotkou (jen přidávání +1, jako dřív) ===
-      const postavaId = f.thumb.split('/').pop().split('.')[0] ||
-                        f.full.split('/').pop().split('.')[0] ||
-                        'neznama';
+  // === Lajky + Dislajky pod fotkou ===
+  const postavaId = f.thumb.split('/').pop().split('.')[0] ||
+                    f.full.split('/').pop().split('.')[0] ||
+                    id;  // fallback na id postavy, když thumbnail nemá unikátní jméno
 
-      const likeContainer = document.createElement('div');
-      likeContainer.style.marginTop = '8px';
-      likeContainer.style.display = 'flex';
-      likeContainer.style.justifyContent = 'center';
-      likeContainer.style.gap = '10px';
+  const likeContainer = document.createElement('div');
+  likeContainer.style.marginTop = '8px';
+  likeContainer.style.display = 'flex';
+  likeContainer.style.justifyContent = 'center';
+  likeContainer.style.gap = '10px';
 
-      const likeButton = document.createElement('button');
-      likeButton.innerHTML = '❤️';
-      likeButton.style.background = 'transparent';
-      likeButton.style.border = 'none';
-      likeButton.style.cursor = 'pointer';
-      likeButton.style.fontSize = '16px';
-      likeButton.style.color = '#ff3366';
+  const likeButton = document.createElement('button');
+  likeButton.innerHTML = '❤️';
+  likeButton.style.background = 'transparent';
+  likeButton.style.border = 'none';
+  likeButton.style.cursor = 'pointer';
+  likeButton.style.fontSize = '16px';
+  likeButton.style.color = '#ff3366';
 
-      const likeCount = document.createElement('span');
-      likeCount.innerText = ' 0';
-      likeCount.style.marginLeft = '2px';
+  const likeCount = document.createElement('span');
+  likeCount.innerText = ' 0';
+  likeCount.style.marginLeft = '2px';
 
-      likeButton.appendChild(likeCount);
-      likeContainer.appendChild(likeButton);
+  likeButton.appendChild(likeCount);
+  likeContainer.appendChild(likeButton);
 
-      const dislikeButton = document.createElement('button');
-      dislikeButton.innerHTML = '👎';
-      dislikeButton.style.background = 'transparent';
-      dislikeButton.style.border = 'none';
-      dislikeButton.style.cursor = 'pointer';
-      dislikeButton.style.fontSize = '16px';
-      dislikeButton.style.color = '#ff3366';
+  const dislikeButton = document.createElement('button');
+  dislikeButton.innerHTML = '👎';
+  dislikeButton.style.background = 'transparent';
+  dislikeButton.style.border = 'none';
+  dislikeButton.style.cursor = 'pointer';
+  dislikeButton.style.fontSize = '16px';
+  dislikeButton.style.color = '#ff3366';
 
-      const dislikeCount = document.createElement('span');
-      dislikeCount.innerText = ' 0';
-      dislikeCount.style.marginLeft = '2px';
+  const dislikeCount = document.createElement('span');
+  dislikeCount.innerText = ' 0';
+  dislikeCount.style.marginLeft = '2px';
 
-      dislikeButton.appendChild(dislikeCount);
-      likeContainer.appendChild(dislikeButton);
+  dislikeButton.appendChild(dislikeCount);
+  likeContainer.appendChild(dislikeButton);
 
-      // Kliky – jen přidávají +1 (jako před toggle)
-      likeButton.onclick = () => {
-        if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
-      };
+  likeButton.onclick = () => {
+    if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
+    console.log("Lajk přidán pro ID: " + postavaId);  // log pro kontrolu
+  };
 
-      dislikeButton.onclick = () => {
-        if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
-      };
+  dislikeButton.onclick = () => {
+    if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
+    console.log("Dislajk přidán pro ID: " + postavaId);
+  };
 
-      // Real-time aktualizace počtů pod fotkou
-      if (window.likeFunctions) {
-        window.likeFunctions.listenLikes(postavaId, (data) => {
-          likeCount.innerText = ` ${data.likes || 0}`;
-          dislikeCount.innerText = ` ${data.dislikes || 0}`;
-        });
-      }
-
-      item.appendChild(likeContainer);
-      gallery.appendChild(item);
+  if (window.likeFunctions) {
+    window.likeFunctions.listenLikes(postavaId, (data) => {
+      likeCount.innerText = ` ${data.likes || 0}`;
+      dislikeCount.innerText = ` ${data.dislikes || 0}`;
+      console.log("Aktualizováno pro ID " + postavaId + ": ❤️" + (data.likes || 0) + " 👎" + (data.dislikes || 0));
     });
   }
 
+  item.appendChild(likeContainer);
+  gallery.appendChild(item);
+});
   function renderPagination() {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
