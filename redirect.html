@@ -46,17 +46,23 @@
     }
   </style>
 
-  <!-- Tvůj Adsterra Popunder script (hlavní zdroj peněz) – vlož svůj aktuální -->
-  <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
-
-  <!-- Pokud máš anti-adblock, přidej ho sem -->
-  <!-- <script src="https://demolitionculpritrape.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script> -->
+  <!-- Tvůj Adsterra Popunder script (hlavní zdroj peněz) -->
   <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
 
-  <!-- Volitelně: starý banner, pokud chceš nechat -->
-  <!-- <script src="https://www.highperformanceformat.com/2b2844954e2220b902ad439f350a7388/invoke.js"></script> -->
+  <!-- Anti-adblock, pokud ho používáš -->
+  <!-- <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script> -->
 </head>
 <body>
+
+  <!-- Logo – stejné jako v index/gallery, vlevo nahoře -->
+  <div style="position: fixed; top: 20px; left: 5%; z-index: 999;">
+    <a href="index.html">
+      <img src="logo.png" alt="QuickPic Logo" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
+    </a>
+  </div>
+
+  <!-- Warning text – posunutý níže, aby logo nepřekrýval -->
+  <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
 
   <h1>Připravujeme fotku/video...</h1>
   <p>Klikni na tlačítko níže a otevře se obsah 🔥 (reklamy nás drží zdarma – díky za pochopení!)</p>
@@ -70,7 +76,6 @@
 
     // Po kliknutí na tlačítko: spustí popunder (Adsterra to udělá automaticky při interakci) + otevře fotku
     document.getElementById('go-btn').onclick = function() {
-      // Adsterra popunder se spustí sám při kliku (nemusíš nic dělat navíc)
       window.open(targetUrl, '_blank'); // otevře v novém tabu
     };
   </script>
