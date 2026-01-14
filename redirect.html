@@ -20,8 +20,15 @@
     }
     h1 {
       font-size: 32px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       color: #ff3366;
+    }
+    #countdown {
+      font-size: 60px;
+      font-weight: bold;
+      color: #ff3366;
+      margin: 20px 0;
+      min-height: 70px;
     }
     p {
       font-size: 18px;
@@ -39,7 +46,7 @@
       transition: all 0.3s;
       text-decoration: none;
       box-shadow: 0 0 15px rgba(255,51,102,0.5);
-      display: none; /* skryté defaultně */
+      margin-top: 20px;
     }
     .button:hover {
       background: #ff1a4d;
@@ -67,11 +74,11 @@
     }
   </style>
 
-  <!-- Adsterra Popunder (spustí se při načtení stránky) -->
+  <!-- Adsterra Popunder + bannery (načtou se při načtení stránky) -->
   <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
 </head>
 <body>
-  <!-- Logo – stejné jako v index/gallery, vlevo nahoře -->
+  <!-- Logo vlevo nahoře -->
   <div style="position: fixed; top: 20px; left: 5%; z-index: 999;">
     <a href="index.html">
       <img src="logo.png" alt="QuickPic Logo" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
@@ -86,31 +93,35 @@
   <div class="warning" data-i18n="warning" style="margin-top: 100px;">⚠️ 18+ NSFW content – adults only. This site uses cookies for ads.</div>
 
   <h1 data-i18n="redirecting">Redirecting you...</h1>
+
+  <!-- Velký odpočet -->
+  <div id="countdown">3</div>
+
   <p data-i18n="pleaseWait">Please wait a moment... 🔥</p>
 
-  <!-- Záložní tlačítko (objeví se, pokud se automatické přesměrování nepodaří) -->
-  <button id="manual-btn" class="button" data-i18n="manualButton">Open content manually 🔥</button>
+  <!-- Záložní / hlavní tlačítko – viditelné hned -->
+  <button id="manual-btn" class="button" data-i18n="manualButton">Open content 🔥</button>
 
   <script>
-    // Jazykový systém (stejný jako v index/gallery)
+    // Jazykový systém
     const translations = {
       cs: {
         title: "Přesměrování...",
         warning: "⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.",
         redirecting: "Přesměrováváme tě...",
         pleaseWait: "Počkej prosím chvíli... 🔥",
-        manualButton: "Otevřít obsah ručně 🔥"
+        manualButton: "Otevřít obsah 🔥"
       },
       en: {
         title: "Redirecting...",
         warning: "⚠️ 18+ NSFW content – adults only. This site uses cookies for ads.",
         redirecting: "Redirecting you...",
         pleaseWait: "Please wait a moment... 🔥",
-        manualButton: "Open content manually 🔥"
+        manualButton: "Open content 🔥"
       }
     };
 
-    let currentLang = localStorage.getItem('lang') || 'en'; // default angličtina
+    let currentLang = localStorage.getItem('lang') || 'en';
 
     function applyLanguage(lang) {
       currentLang = lang;
@@ -128,34 +139,36 @@
       document.getElementById('lang-en').classList.toggle('active', lang === 'en');
     }
 
-    // Přepínač
     document.getElementById('lang-cs').onclick = () => applyLanguage('cs');
     document.getElementById('lang-en').onclick = () => applyLanguage('en');
 
-    // Načti jazyk při startu
     applyLanguage(currentLang);
 
-    // Získej cílový URL z query parametru (?url=...)
+    // Získej cílový URL
     const params = new URLSearchParams(window.location.search);
-    const targetUrl = params.get('url') || 'https://quickpic.site'; // fallback
+    const targetUrl = params.get('url') || 'https://quickpic.site';
 
-    // Automatické přesměrování po 1.5 sekundě
-    const timeoutId = setTimeout((5) => {
-      window.open(targetUrl, '_blank');
-      // Pokud se nepodařilo (např. blokovaný popup), zobraz záložní tlačítko
-      setTimeout(() => {
-        document.getElementById('manual-btn').style.display = 'block';
-      }, 500);
-    }, 1500);
+    // Odpočet 3...2...1...0
+    let seconds = 3;
+    const countdownEl = document.getElementById('countdown');
+    const interval = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        countdownEl.textContent = '0';
+        // Automatické otevření
+        window.open(targetUrl, '_blank');
+      }
+    }, 1000);
 
-    // Ruční klik na tlačítko (pokud se automatické nepodařilo)
+    // Ruční klik na tlačítko (funguje hned)
     document.getElementById('manual-btn').onclick = function() {
       window.open(targetUrl, '_blank');
-      this.style.display = 'none'; // schovej po kliku
+      clearInterval(interval); // zastav odpočet
+      this.style.background = '#4CAF50'; // zelené po kliku
+      this.textContent = currentLang === 'cs' ? 'Otevřeno!' : 'Opened!';
     };
-
-    // Pokud se automatické otevře, schovej tlačítko
-    window.addEventListener('beforeunload', () => clearTimeout(timeoutId));
   </script>
 </body>
 </html>
