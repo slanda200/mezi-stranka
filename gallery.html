@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
   <link rel="icon" href="favicon.png" type="image/png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galerie (18+)</title>
+  <title data-i18n="title">Gallery (18+)</title>
   <!-- Privacy-friendly analytics by Plausible -->
-<script async src="https://plausible.io/js/pa-LQwM-pipGzC-bcT6Ib7K_.js"></script>
-<script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
-</script>
-
+  <script async src="https://plausible.io/js/pa-LQwM-pipGzC-bcT6Ib7K_.js"></script>
+  <script>
+    window.plausible = window.plausible || function() { (plausible.q = plausible.q || []).push(arguments) }
+    plausible.init = plausible.init || function(i) { plausible.o = i || {} }
+    plausible.init()
+  </script>
   <style>
     body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
     h1 { font-size: 40px; margin-bottom: 50px; }
@@ -29,6 +29,9 @@
     .pagination button:hover { background: #ff4444; border-color: #ff4444; transform: scale(1.1); }
     .pagination button.active { background: #ff4444; border-color: #ff4444; color: #fff; font-weight: bold; }
     .pagination button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    #lang-switch { position: fixed; top: 20px; right: 20px; z-index: 999; font-size: 16px; background: #222; padding: 8px 15px; border-radius: 8px; box-shadow: 0 0 10px #000; }
+    #lang-switch a { color: #00aaff; margin: 0 10px; cursor: pointer; }
+    #lang-switch a.active { color: #fff; font-weight: bold; }
   </style>
   <!-- Adsterra Popunder + Social Bar -->
   <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
@@ -101,56 +104,74 @@
       <img src="logo.png" alt="QuickPic Logo" class="logo-img" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
     </a>
   </div>
-  <div class="warning">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
-  <h1 id="postava-name">Načítání galerie...</h1>
-  <!-- Text "Chtěli byste více contentu?" – jen jednou pod názvem postavy -->
+
+  <!-- Jazykový přepínač -->
+  <div id="lang-switch">
+    <a id="lang-cs">CZ</a> | <a id="lang-en" class="active">EN</a>
+  </div>
+
+  <div class="warning" data-i18n="warning">⚠️ 18+ NSFW content – adults only. This site uses cookies for ads.</div>
+
+  <h1 id="postava-name" data-i18n="loading">Loading gallery...</h1>
+
+  <!-- Text "Would you like more content?" – jen jednou pod názvem postavy -->
   <div id="more-content-container" style="margin-top: 10px; font-size: 16px; color: #aaa; display: flex; justify-content: center; align-items: center; gap: 10px;">
-    Chtěli byste více contentu?
+    <span data-i18n="moreContent">Would you like more content?</span>
     <span id="more-like-count" style="margin: 0 4px; font-size: 18px; color: #ff3366;">0</span>
     <button id="more-like-btn" style="background:transparent; border:none; cursor:pointer; font-size:20px; color:#ff3366; padding:0; margin:0 4px;">❤️</button>
     <span id="more-dislike-count" style="margin: 0 4px; font-size: 18px; color: #ff3366;">0</span>
     <button id="more-dislike-btn" style="background:transparent; border:none; cursor:pointer; font-size:20px; color:#ff3366; padding:0; margin:0 4px;">👎</button>
   </div>
+
   <!-- Reklama nahoře -->
   <div class="ad-banner"></div>
   <script src="https://pl28425827.effectivegatecpm.com/89/a8/4c/89a84c783c65f34b2f995b0a6b4be089.js"></script>
   <script src="https://pl28425825.effectivegatecpm.com/f8/aa/ab/f8aaabac33ee2bddf546f1c71602be83.js"></script>
+
   <div class="gallery" id="gallery"></div>
+
   <!-- Paginace -->
   <div class="pagination" id="pagination"></div>
+
   <!-- Reklama dole -->
   <div class="ad-banner"></div>
-  <a href="index.html">Zpět na výběr</a>
+  <a href="index.html" data-i18n="back">Back to selection</a>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id') || 'nasta.theruss';
+
     // Manuálně pošleme pageview s id postavy v URL (pro Plausible)
-if (window.plausible) {
-  const customPath = '/gallery.html/' + id;  // např. /gallery.html/nasta.theruss
-  plausible('pageview', { url: location.origin + customPath });
-  console.log("Plausible manuálně poslal: " + customPath); // pro kontrolu v konzoli
-}
+    if (window.plausible) {
+      const customPath = '/gallery.html/' + id;
+      plausible('pageview', { url: location.origin + customPath });
+      console.log("Plausible manuálně poslal: " + customPath);
+    }
+
     const photosPerPage = 20;
     let currentPage = 1;
     let allPhotos = [];
-    document.getElementById('postava-name').textContent = id + ' - Načítání fotek...';
-    // Globální počty pod názvem postavy (celkové pro postavu)
+
+    // Globální počty pod názvem postavy
     if (window.likeFunctions) {
       window.likeFunctions.listenLikes(id, (data) => {
         document.getElementById('more-like-count').textContent = data.likes || 0;
         document.getElementById('more-dislike-count').textContent = data.dislikes || 0;
       });
     }
-    // Kliky pod názvem postavy (přidávají +1, bez toggle – jako dřív)
+
+    // Kliky pod názvem postavy
     document.getElementById('more-like-btn').onclick = () => {
       if (window.likeFunctions) window.likeFunctions.likePost(id);
     };
+
     document.getElementById('more-dislike-btn').onclick = () => {
       if (window.likeFunctions) window.likeFunctions.dislikePost(id);
     };
+
     fetch(`postavy/${id}.txt`)
       .then(response => {
-        if (!response.ok) throw new Error(`Soubor nenalezen (status ${response.status})`);
+        if (!response.ok) throw new Error(`File not found (status ${response.status})`);
         return response.text();
       })
       .then(text => {
@@ -163,15 +184,16 @@ if (window.plausible) {
         }
         document.getElementById('postava-name').textContent =
           allPhotos.length === 0
-            ? id + ' - žádné položky'
-            : id + ' - ' + allPhotos.length + ' položek';
+            ? `${id} - no items`
+            : `${id} - ${allPhotos.length} items`;
         renderPage(currentPage);
         renderPagination();
       })
       .catch(err => {
-        console.error('Chyba:', err);
-        document.getElementById('postava-name').textContent = 'Postava nenalezena – zkontroluj soubor postavy/' + id + '.txt';
+        console.error('Error:', err);
+        document.getElementById('postava-name').textContent = 'Character not found – check file postavy/' + id + '.txt';
       });
+
     function renderPage(page) {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
@@ -179,82 +201,100 @@ if (window.plausible) {
       const start = (page - 1) * photosPerPage;
       const end = Math.min(start + photosPerPage, allPhotos.length);
       const pagePhotos = allPhotos.slice(start, end);
+
       pagePhotos.forEach(f => {
         const isVideo = /\.(mp4|webm|mov)$/i.test(f.full);
         let thumbSrc = f.thumb || UNIVERSAL_VIDEO_THUMB;
         if (!thumbSrc) thumbSrc = "placeholder.jpg";
+
         const item = document.createElement('div');
         item.className = 'item';
+
         let playIcon = '';
         if (isVideo) {
           playIcon = '<div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:#ff3366; text-shadow:0 0 12px black; pointer-events:none; opacity:0.9;">▶</div>';
         }
+
         item.innerHTML = `
           <a href="redirect.html?url=${encodeURIComponent(f.full)}" target="_blank" rel="noopener" style="position:relative; display:block;">
-            <img src="${thumbSrc}" alt="${isVideo ? 'Video' : 'Fotka'}" loading="lazy">
+            <img src="${thumbSrc}" alt="${isVideo ? 'Video' : 'Photo'}" loading="lazy">
             ${playIcon}
-            <div class="name">Klikni pro ${isVideo ? 'VIDEO 🔥' : 'full'}</div>
+            <div class="name">Click for ${isVideo ? 'VIDEO 🔥' : 'full'}</div>
           </a>
         `;
+
         // === Lajky + Dislajky pod fotkou ===
         const postavaId = f.thumb.split('/').pop().split('.')[0] ||
                           f.full.split('/').pop().split('.')[0] ||
-                          id; // fallback na id postavy, když thumbnail nemá unikátní jméno
+                          id;
+
         const likeContainer = document.createElement('div');
         likeContainer.style.marginTop = '8px';
         likeContainer.style.display = 'flex';
         likeContainer.style.justifyContent = 'center';
         likeContainer.style.gap = '10px';
+
         const likeButton = document.createElement('button');
         likeButton.innerHTML = '❤️';
         likeButton.style.background = 'transparent';
-        likeButton.style.border = '2px solid #ff3366';     // ← přidáno
+        likeButton.style.border = '2px solid #ff3366';
         likeButton.style.borderRadius = '50%';
         likeButton.style.cursor = 'pointer';
         likeButton.style.fontSize = '16px';
         likeButton.style.color = '#ff3366';
+
         const likeCount = document.createElement('span');
         likeCount.innerText = ' 0';
         likeCount.style.marginLeft = '2px';
+
         likeButton.appendChild(likeCount);
         likeContainer.appendChild(likeButton);
+
         const dislikeButton = document.createElement('button');
         dislikeButton.innerHTML = '👎';
         dislikeButton.style.background = 'transparent';
-        likeButton.style.border = 'none';
+        dislikeButton.style.border = '2px solid #ff3366';
+        dislikeButton.style.borderRadius = '50%';
         dislikeButton.style.cursor = 'pointer';
         dislikeButton.style.fontSize = '16px';
         dislikeButton.style.color = '#ff3366';
+
         const dislikeCount = document.createElement('span');
         dislikeCount.innerText = ' 0';
         dislikeCount.style.marginLeft = '2px';
+
         dislikeButton.appendChild(dislikeCount);
         likeContainer.appendChild(dislikeButton);
+
         likeButton.onclick = () => {
           if (window.likeFunctions) window.likeFunctions.likePost(postavaId);
-          console.log("Lajk přidán pro ID: " + postavaId); // log pro kontrolu
+          console.log("Like added for ID: " + postavaId);
         };
+
         dislikeButton.onclick = () => {
           if (window.likeFunctions) window.likeFunctions.dislikePost(postavaId);
-          console.log("Dislajk přidán pro ID: " + postavaId);
+          console.log("Dislike added for ID: " + postavaId);
         };
+
         if (window.likeFunctions) {
           window.likeFunctions.listenLikes(postavaId, (data) => {
             likeCount.innerText = ` ${data.likes || 0}`;
             dislikeCount.innerText = ` ${data.dislikes || 0}`;
-            console.log("Aktualizováno pro ID " + postavaId + ": ❤️" + (data.likes || 0) + " 👎" + (data.dislikes || 0));
+            console.log("Updated for ID " + postavaId + ": ❤️" + (data.likes || 0) + " 👎" + (data.dislikes || 0));
           });
         }
+
         item.appendChild(likeContainer);
         gallery.appendChild(item);
       });
     }
+
     function renderPagination() {
       const pagination = document.getElementById('pagination');
       pagination.innerHTML = '';
       const totalPages = Math.ceil(allPhotos.length / photosPerPage);
       const prev = document.createElement('button');
-      prev.textContent = '◀ Předchozí';
+      prev.textContent = '◀ Previous';
       prev.disabled = currentPage === 1;
       prev.onclick = () => {
         if (currentPage > 1) {
@@ -264,9 +304,11 @@ if (window.plausible) {
         }
       };
       pagination.appendChild(prev);
+
       let startPage = Math.max(1, currentPage - 2);
       let endPage = Math.min(totalPages, startPage + 4);
       if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+
       for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
@@ -278,8 +320,9 @@ if (window.plausible) {
         };
         pagination.appendChild(btn);
       }
+
       const next = document.createElement('button');
-      next.textContent = 'Další ▶';
+      next.textContent = 'Next ▶';
       next.disabled = currentPage === totalPages;
       next.onclick = () => {
         if (currentPage < totalPages) {
@@ -290,12 +333,56 @@ if (window.plausible) {
       };
       pagination.appendChild(next);
     }
+
     function updatePagination() {
       const buttons = document.querySelectorAll('.pagination button');
       buttons.forEach(btn => {
         btn.className = (btn.textContent === currentPage.toString()) ? 'active' : '';
       });
     }
+
+    // Jazykový systém (stejný jako v indexu)
+    const translations = {
+      cs: {
+        title: "Galerie (18+)",
+        warning: "⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.",
+        loading: "Načítání galerie...",
+        moreContent: "Chtěli byste více contentu?",
+        back: "Zpět na výběr"
+      },
+      en: {
+        title: "Gallery (18+)",
+        warning: "⚠️ 18+ NSFW content – adults only. This site uses cookies for ads.",
+        loading: "Loading gallery...",
+        moreContent: "Would you like more content?",
+        back: "Back to selection"
+      }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'en'; // default angličtina
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      document.getElementById('lang-cs').classList.toggle('active', lang === 'cs');
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    }
+
+    // Přepínač
+    document.getElementById('lang-cs').onclick = () => applyLanguage('cs');
+    document.getElementById('lang-en').onclick = () => applyLanguage('en');
+
+    // Načti jazyk při startu
+    applyLanguage(currentLang);
   </script>
 </body>
 </html>
