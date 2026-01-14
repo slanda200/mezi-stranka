@@ -8,7 +8,8 @@
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-LQwM-pipGzC-bcT6Ib7K_.js"></script>
   <script>
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    window.plausible = window.plausible || function() { (plausible.q = plausible.q || []).push(arguments) }
+    plausible.init = plausible.init || function(i) { plausible.o = i || {} }
     plausible.init()
   </script>
   <style>
@@ -20,20 +21,11 @@
     .name { font-size: 24px; color: #00aaff; }
     a { text-decoration: none; }
     .warning { color: #ff6666; font-size: 18px; margin-bottom: 40px; }
-    .ad-banner {
-      margin: 50px auto;
-      width: 100%;
-      max-width: 970px;
-      min-height: 90px;
-      text-align: center;
-      background: #222;
-      border-radius: 10px;
-      padding: 10px;
-      color: #aaa;
-    }
-    @media (max-width: 768px) {
-      .ad-banner { min-height: 250px; }
-    }
+    .ad-banner { margin: 50px auto; width: 100%; max-width: 970px; min-height: 90px; text-align: center; background: #222; border-radius: 10px; padding: 10px; color: #aaa; }
+    @media (max-width: 768px) { .ad-banner { min-height: 250px; } }
+    #lang-switch { position: fixed; top: 20px; right: 20px; z-index: 999; font-size: 16px; background: #222; padding: 8px 15px; border-radius: 8px; box-shadow: 0 0 10px #000; }
+    #lang-switch a { color: #00aaff; margin: 0 10px; cursor: pointer; }
+    #lang-switch a.active { color: #fff; font-weight: bold; }
   </style>
 
   <!-- Logo – střed vlevo -->
@@ -42,44 +34,104 @@
       <img src="logo.png" alt="QuickPic Logo" class="logo-img" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
     </a>
   </div>
-  <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.
-  RESPEKTUJE</div>
-  <h1> - Reddit app zase blbne s reklamami? 😏
-Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez problému.</h1>
-  <div style="font-size: 18px; margin: 50px auto; max-width: 800px; padding: 20px; background: #222; border-radius: 10px;">
-    <p>Vítej na QuickPic! Tato stránka je čerstvě spuštěná a roste každý den.</p>
-    <p>Budem rádi za vyplnění krátkého dotazníku a za návrhy koho dalšího máme přidat.</p>
-    <p>Nový den nové přidání
-      +karinkapedro
-      +De.Athene novinky
-      +kafuu novinky
-      +teribalci novinky
-      nebojte další videa / fotky budeme přidávat postupně </p>
 
-     <div class="warning" style="margin-top: 100px;"> Nově přidaná kategorie celebrity. Koho by jste chtěli? Pište do formuláře. </div>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="300" height="600" frameborder="0" marginheight="0" marginwidth="0">Načítání…</iframe>
+  <!-- Jazykový přepínač -->
+  <div id="lang-switch">
+    <a id="lang-cs" class="active">CZ</a> | <a id="lang-en">EN</a>
+  </div>
+
+  <div class="warning" id="warning" style="margin-top: 100px;">⚠️ 18+ NSFW content – adults only. This site uses cookies for ads.</div>
+
+  <h1 id="title-h1">- Reddit app keeps messing with ads? 😏<br>Open in a normal browser (Chrome/Firefox/Safari) and you're good to go.</h1>
+
+  <div style="font-size: 18px; margin: 50px auto; max-width: 800px; padding: 20px; background: #222; border-radius: 10px;">
+    <p id="welcome">Welcome to QuickPic! This page is freshly launched and growing every day.</p>
+    <p id="survey">We'd be happy if you fill out a short survey and suggest who else to add.</p>
+    <p id="new-additions">New day, new additions:<br>
+      +karinkapedro<br>
+      +De.Athene updates<br>
+      +kafuu updates<br>
+      +teribalci updates<br>
+      Don't worry, more videos/photos will be added gradually
+    </p>
+    <div class="warning" style="margin-top: 20px;" id="new-category">New category: Celebrity. Who would you like? Write in the form.</div>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="300" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
   </div>
 
   <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
 
-  <!-- Kategorie CZ/SK -->
-  <h2>CZ/SK</h2>
+  <h2 id="czsk-title">CZ/SK</h2>
   <div class="gallery" id="czsk-gallery"></div>
 
-  <!-- Kategorie Worldwide -->
-  <h2>Worldwide</h2>
+  <h2 id="worldwide-title">Worldwide</h2>
   <div class="gallery" id="worldwide-gallery"></div>
 
-  <!-- Nová kategorie: Celebrity (anglicky) -->
-  <h2>Celebrity</h2>
+  <h2 id="celebrity-title">Celebrity</h2>
   <div class="gallery" id="celeb-gallery"></div>
 
-  <div class="warning" style="margin-top: 100px;">
-    Respektujeme všechny ❤️<br>
-    Něco vadí nebo máš tip? Napiš anonymně: <a href="mailto:quickpic.site@proton.me" style="color:#00aaff;">quickpic.site@proton.me</a>
+  <div class="warning" style="margin-top: 100px;" id="footer-respect">
+    We respect everyone ❤️<br>
+    Something bothering you or have a tip? Write anonymously: <a href="mailto:quickpic.site@proton.me" style="color:#00aaff;">quickpic.site@proton.me</a>
   </div>
 
   <script>
+    // Překlady – čeština je default, ale přepínač umožní EN
+    const translations = {
+      cs: {
+        title: "QuickPic - Hot NSFW (18+)",
+        warning: "⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.",
+        titleH1: "- Reddit app zase blbne s reklamami? 😏 Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez problému.",
+        welcome: "Vítej na QuickPic! Tato stránka je čerstvě spuštěná a roste každý den.",
+        survey: "Budem rádi za vyplnění krátkého dotazníku a za návrhy koho dalšího máme přidat.",
+        newAdditions: "Nový den nové přidání\n+karinkapedro\n+De.Athene novinky\n+kafuu novinky\n+teribalci novinky\nnebojte další videa / fotky budeme přidávat postupně",
+        newCategory: "Nově přidaná kategorie celebrity. Koho by jste chtěli? Pište do formuláře.",
+        czsk: "CZ/SK",
+        worldwide: "Worldwide",
+        celebrity: "Celebrity",
+        footerRespect: "Respektujeme všechny ❤️<br>Něco vadí nebo máš tip? Napiš anonymně:"
+      },
+      en: {
+        title: "QuickPic - Hot NSFW (18+)",
+        warning: "⚠️ 18+ NSFW content – adults only. This site uses cookies for ads.",
+        titleH1: "- Reddit app keeps messing with ads? 😏 Open in a normal browser (Chrome/Firefox/Safari) and you're good to go.",
+        welcome: "Welcome to QuickPic! This page is freshly launched and growing every day.",
+        survey: "We'd be happy if you fill out a short survey and suggest who else to add.",
+        newAdditions: "New day, new additions:\n+karinkapedro\n+De.Athene updates\n+kafuu updates\n+teribalci updates\nDon't worry, more videos/photos will be added gradually",
+        newCategory: "New category: Celebrity. Who would you like? Write in the form.",
+        czsk: "CZ/SK",
+        worldwide: "Worldwide",
+        celebrity: "Celebrity",
+        footerRespect: "We respect everyone ❤️<br>Something bothering you or have a tip? Write anonymously:"
+      }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'en'; // DEFAULT ANGLIČTINA, jak jsi chtěl
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      // Aktualizuj aktivní jazyk v přepínači
+      document.getElementById('lang-cs').classList.toggle('active', lang === 'cs');
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    }
+
+    // Přepínač
+    document.getElementById('lang-cs').onclick = () => applyLanguage('cs');
+    document.getElementById('lang-en').onclick = () => applyLanguage('en');
+
+    // Načti počáteční jazyk
+    applyLanguage(currentLang);
+
+    // Fetch postav (stejný jako dřív)
     fetch('postavy/list.txt')
       .then(response => response.text())
       .then(text => {
@@ -90,24 +142,16 @@ Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez probl�
         const celeb = [];
         lines.forEach(line => {
           line = line.trim();
-          if (line.startsWith('# CZ/SK')) {
-            currentSection = 'czsk';
-          } else if (line.startsWith('# Worldwide')) {
-            currentSection = 'worldwide';
-          } else if (line.startsWith('# celeb')) {
-            currentSection = 'celeb';
-          } else if (line && !line.startsWith('#')) {
-            if (currentSection === 'czsk') {
-              czsk.push(line);
-            } else if (currentSection === 'worldwide') {
-              worldwide.push(line);
-            } else if (currentSection === 'celeb') {
-              celeb.push(line);
-            }
+          if (line.startsWith('# CZ/SK')) currentSection = 'czsk';
+          else if (line.startsWith('# Worldwide')) currentSection = 'worldwide';
+          else if (line.startsWith('# celeb')) currentSection = 'celeb';
+          else if (line && !line.startsWith('#')) {
+            if (currentSection === 'czsk') czsk.push(line);
+            else if (currentSection === 'worldwide') worldwide.push(line);
+            else if (currentSection === 'celeb') celeb.push(line);
           }
         });
 
-        // CZ/SK galerie
         const czskGallery = document.getElementById('czsk-gallery');
         czsk.forEach(id => {
           const item = document.createElement('div');
@@ -116,7 +160,6 @@ Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez probl�
           czskGallery.appendChild(item);
         });
 
-        // Worldwide galerie
         const worldwideGallery = document.getElementById('worldwide-gallery');
         worldwide.forEach(id => {
           const item = document.createElement('div');
@@ -125,7 +168,6 @@ Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez probl�
           worldwideGallery.appendChild(item);
         });
 
-        // Celebrity galerie
         const celebGallery = document.getElementById('celeb-gallery');
         celeb.forEach(id => {
           const item = document.createElement('div');
@@ -135,5 +177,32 @@ Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez probl�
         });
       });
   </script>
+</head>
+<body>
+  <div class="warning" data-i18n="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.</div>
+
+  <h1 data-i18n="titleH1">- Reddit app zase blbne s reklamami? 😏 Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez problému.</h1>
+
+  <div style="font-size: 18px; margin: 50px auto; max-width: 800px; padding: 20px; background: #222; border-radius: 10px;">
+    <p data-i18n="welcome">Vítej na QuickPic! Tato stránka je čerstvě spuštěná a roste každý den.</p>
+    <p data-i18n="survey">Budem rádi za vyplnění krátkého dotazníku a za návrhy koho dalšího máme přidat.</p>
+    <p data-i18n="newAdditions">Nový den nové přidání<br>+karinkapedro<br>+De.Athene novinky<br>+kafuu novinky<br>+teribalci novinky<br>nebojte další videa / fotky budeme přidávat postupně</p>
+    <div class="warning" data-i18n="newCategory" style="margin-top: 20px;">Nově přidaná kategorie celebrity. Koho by jste chtěli? Pište do formuláře.</div>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="300" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  </div>
+
+  <h2 data-i18n="czsk">CZ/SK</h2>
+  <div class="gallery" id="czsk-gallery"></div>
+
+  <h2 data-i18n="worldwide">Worldwide</h2>
+  <div class="gallery" id="worldwide-gallery"></div>
+
+  <h2 data-i18n="celebrity">Celebrity</h2>
+  <div class="gallery" id="celeb-gallery"></div>
+
+  <div class="warning" style="margin-top: 100px;" data-i18n="footerRespect">
+    Respektujeme všechny ❤️<br>
+    Něco vadí nebo máš tip? Napiš anonymně: <a href="mailto:quickpic.site@proton.me" style="color:#00aaff;">quickpic.site@proton.me</a>
+  </div>
 </body>
 </html>
