@@ -26,6 +26,7 @@
     #lang-switch { position: fixed; top: 20px; right: 20px; z-index: 999; font-size: 16px; background: #222; padding: 8px 15px; border-radius: 8px; box-shadow: 0 0 10px #000; }
     #lang-switch a { color: #00aaff; margin: 0 10px; cursor: pointer; }
     #lang-switch a.active { color: #fff; font-weight: bold; }
+    #feedback-form iframe { display: block; margin: 0 auto; }
   </style>
 
   <!-- Logo – střed vlevo -->
@@ -49,7 +50,15 @@
     <p data-i18n="survey">We'd be happy if you fill out a short survey and suggest who else to add.</p>
     <p data-i18n="newAdditions">New day, new additions:<br>+karinkapedro<br>+De.Athene updates<br>+kafuu updates<br>+teribalci updates<br>Don't worry, more videos/photos will be added gradually</p>
     <div class="warning" data-i18n="newCategory" style="margin-top: 20px;">New category: Celebrity. Who would you like? Write in the form.</div>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="300" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+
+    <!-- DVA FORMULÁŘE – přepínání podle jazyka -->
+    <div id="feedback-form">
+      <!-- Český formulář (ten starý) -->
+      <iframe id="cs-form" src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="640" height="1080" frameborder="0" marginheight="0" marginwidth="0" style="display:block;">Loading…</iframe>
+
+      <!-- Anglický formulář (nový) – SEM VLOŽ NOVÝ EMBED KÓD -->
+      <iframe id="en-form" src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="640" height="1080" frameborder="0" marginheight="0" marginwidth="0">Načítání…</iframe>
+    </div>
   </div>
 
   <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
@@ -69,7 +78,7 @@
   </div>
 
   <script>
-    // Překlady
+    // Překlady (stejné jako dřív)
     const translations = {
       cs: {
         title: "QuickPic - Hot NSFW (18+)",
@@ -82,7 +91,7 @@
         czsk: "CZ/SK",
         worldwide: "Worldwide",
         celebrity: "Celebrity",
-        footerRespect: "Respektujeme všechny ❤️\nNěco vadí nebo máš tip? Napiš anonymně: quickpic.site@proton.me"
+        footerRespect: "Respektujeme všechny ❤️\nNěco vadí nebo máš tip? Napiš anonymně:"
       },
       en: {
         title: "QuickPic - Hot NSFW (18+)",
@@ -95,7 +104,7 @@
         czsk: "CZ/SK",
         worldwide: "Worldwide",
         celebrity: "Celebrity",
-        footerRespect: "We respect everyone ❤️\nSomething bothering you or have a tip? Write anonymously: quickpic.site@proton.me"
+        footerRespect: "We respect everyone ❤️\nSomething bothering you or have a tip? Write anonymously:"
       }
     };
 
@@ -115,13 +124,17 @@
 
       document.getElementById('lang-cs').classList.toggle('active', lang === 'cs');
       document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+
+      // Přepni formulář podle jazyka
+      document.getElementById('cs-form').style.display = (lang === 'cs') ? 'block' : 'none';
+      document.getElementById('en-form').style.display = (lang === 'en') ? 'block' : 'none';
     }
 
     // Přepínač
     document.getElementById('lang-cs').onclick = () => applyLanguage('cs');
     document.getElementById('lang-en').onclick = () => applyLanguage('en');
 
-    // Načti jazyk při startu
+    // Načti jazyk při startu + přepni formulář
     applyLanguage(currentLang);
 
     // Fetch postav (stejný jako dřív)
