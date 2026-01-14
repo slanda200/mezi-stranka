@@ -26,7 +26,7 @@
     #lang-switch { position: fixed; top: 20px; right: 20px; z-index: 999; font-size: 16px; background: #222; padding: 8px 15px; border-radius: 8px; box-shadow: 0 0 10px #000; }
     #lang-switch a { color: #00aaff; margin: 0 10px; cursor: pointer; }
     #lang-switch a.active { color: #fff; font-weight: bold; }
-    #feedback-form iframe { display: block; margin: 0 auto; }
+    #feedback-form iframe { display: block; margin: 0 auto; width: 640px; height: 1080px; border: none; }
   </style>
 
   <!-- Logo – střed vlevo -->
@@ -52,13 +52,12 @@
     <div class="warning" data-i18n="newCategory" style="margin-top: 20px;">New category: Celebrity. Who would you like? Write in the form.</div>
 
     <!-- DVA FORMULÁŘE – přepínání podle jazyka -->
-    <div id="feedback-form">
-      <!-- Český formulář (ten starý) -->
+    <div id="feedback-form" style="margin-top: 30px;">
+      <!-- Český formulář (ten starý, co máš teď) -->
       <iframe id="cs-form" src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="640" height="1080" frameborder="0" marginheight="0" marginwidth="0" style="display:block;">Loading…</iframe>
 
-      <!-- Anglický formulář (nový) – SEM VLOŽ NOVÝ EMBED KÓD -->
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSflFQ6V9vZgzzCFPcR1HGVBWwCnD_XzR29zz9HV2UDmNvg40w/viewform?embedded=true" width="640" height="1080" frameborder="0" marginheight="0" marginwidth="0">Načítání…</iframe>
-     
+      <!-- Anglický formulář – NAHRAĎ TENTO SRC SKUTEČNÝM EMBED KÓDEM TVÉHO NOVÉHO ANGLICKÉHO FORMULÁŘE -->
+      <iframe id="en-form" src="https://docs.google.com/forms/d/e/1FAIpQLSflFQ6V9vZgzzCFPcR1HGVBWwCnD_XzR29zz9HV2UDmNvg40w/viewform?embedded=true" width="640" height="1080" frameborder="0" marginheight="0" marginwidth="0">Načítání…</iframe>
     </div>
   </div>
 
