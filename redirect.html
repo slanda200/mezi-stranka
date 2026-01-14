@@ -140,7 +140,7 @@
     const targetUrl = params.get('url') || 'https://quickpic.site'; // fallback
 
     // Automatické přesměrování po 1.5 sekundě
-    const timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout((5) => {
       window.open(targetUrl, '_blank');
       // Pokud se nepodařilo (např. blokovaný popup), zobraz záložní tlačítko
       setTimeout(() => {
