@@ -26,13 +26,49 @@
     p {
       font-size: 18px;
       max-width: 600px;
+      margin-bottom: 30px;
+    }
+    .button {
+      background: #ff3366;
+      color: white;
+      padding: 18px 40px;
+      font-size: 22px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(255,51,102,0.5);
+      display: none; /* skryté defaultně */
+    }
+    .button:hover {
+      background: #ff1a4d;
+      transform: scale(1.05);
+    }
+    #lang-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+      font-size: 16px;
+      background: #222;
+      padding: 8px 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #000;
+    }
+    #lang-switch a {
+      color: #00aaff;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+    #lang-switch a.active {
+      color: #fff;
+      font-weight: bold;
     }
   </style>
 
   <!-- Adsterra Popunder (spustí se při načtení stránky) -->
   <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
-
-  <!-- Jazykový systém – stejný jako v index/gallery -->
 </head>
 <body>
   <!-- Logo – stejné jako v index/gallery, vlevo nahoře -->
@@ -42,8 +78,8 @@
     </a>
   </div>
 
-  <!-- Jazykový přepínač (volitelně, pokud chceš) -->
-  <div id="lang-switch" style="position: fixed; top: 20px; right: 20px; z-index: 999; font-size: 16px; background: #222; padding: 8px 15px; border-radius: 8px; box-shadow: 0 0 10px #000;">
+  <!-- Jazykový přepínač -->
+  <div id="lang-switch">
     <a id="lang-cs">CZ</a> | <a id="lang-en" class="active">EN</a>
   </div>
 
@@ -52,6 +88,9 @@
   <h1 data-i18n="redirecting">Redirecting you...</h1>
   <p data-i18n="pleaseWait">Please wait a moment... 🔥</p>
 
+  <!-- Záložní tlačítko (objeví se, pokud se automatické přesměrování nepodaří) -->
+  <button id="manual-btn" class="button" data-i18n="manualButton">Open content manually 🔥</button>
+
   <script>
     // Jazykový systém (stejný jako v index/gallery)
     const translations = {
@@ -59,13 +98,15 @@
         title: "Přesměrování...",
         warning: "⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.",
         redirecting: "Přesměrováváme tě...",
-        pleaseWait: "Počkej prosím chvíli... 🔥"
+        pleaseWait: "Počkej prosím chvíli... 🔥",
+        manualButton: "Otevřít obsah ručně 🔥"
       },
       en: {
         title: "Redirecting...",
         warning: "⚠️ 18+ NSFW content – adults only. This site uses cookies for ads.",
         redirecting: "Redirecting you...",
-        pleaseWait: "Please wait a moment... 🔥"
+        pleaseWait: "Please wait a moment... 🔥",
+        manualButton: "Open content manually 🔥"
       }
     };
 
@@ -94,13 +135,27 @@
     // Načti jazyk při startu
     applyLanguage(currentLang);
 
-    // Automatické přesměrování po 1.5 sekundě + spuštění popunderu
+    // Získej cílový URL z query parametru (?url=...)
     const params = new URLSearchParams(window.location.search);
     const targetUrl = params.get('url') || 'https://quickpic.site'; // fallback
 
-    setTimeout(() => {
-      window.open(targetUrl, '_blank'); // otevře v novém tabu
+    // Automatické přesměrování po 1.5 sekundě
+    const timeoutId = setTimeout(() => {
+      window.open(targetUrl, '_blank');
+      // Pokud se nepodařilo (např. blokovaný popup), zobraz záložní tlačítko
+      setTimeout(() => {
+        document.getElementById('manual-btn').style.display = 'block';
+      }, 500);
     }, 1500);
+
+    // Ruční klik na tlačítko (pokud se automatické nepodařilo)
+    document.getElementById('manual-btn').onclick = function() {
+      window.open(targetUrl, '_blank');
+      this.style.display = 'none'; // schovej po kliku
+    };
+
+    // Pokud se automatické otevře, schovej tlačítko
+    window.addEventListener('beforeunload', () => clearTimeout(timeoutId));
   </script>
 </body>
 </html>
