@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QuickPic - Hot NSFW (18+)</title>
   <!-- Privacy-friendly analytics by Plausible -->
-<script async src="https://plausible.io/js/pa-LQwM-pipGzC-bcT6Ib7K_.js"></script>
-<script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
-</script>
-
+  <script async src="https://plausible.io/js/pa-LQwM-pipGzC-bcT6Ib7K_.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
   <style>
     body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 40px; text-align: center; }
     h1 { font-size: 40px; margin-bottom: 50px; }
@@ -35,45 +34,48 @@
     @media (max-width: 768px) {
       .ad-banner { min-height: 250px; }
     }
-    
   </style>
-  
+
   <!-- Logo – střed vlevo -->
   <div style="position: fixed; top: 20px; left: 5%; z-index: 999;">
     <a href="index.html">
       <img src="logo.png" alt="QuickPic Logo" class="logo-img" style="width: 80px; height: auto; border-radius: 50%; box-shadow: 0 0 10px #000;">
     </a>
   </div>
-
   <div class="warning" style="margin-top: 100px;">⚠️ 18+ NSFW obsah – pouze pro dospělé. Stránka používá cookies pro reklamy.
   RESPEKTUJE</div>
-
-  <h1>   - Reddit app zase blbne s reklamami? 😏  
+  <h1> - Reddit app zase blbne s reklamami? 😏
 Otevři v normálním prohlížeči (Chrome/Firefox/ Safari) a jedeš bez problému.</h1>
-
   <div style="font-size: 18px; margin: 50px auto; max-width: 800px; padding: 20px; background: #222; border-radius: 10px;">
     <p>Vítej na QuickPic! Tato stránka je čerstvě spuštěná a roste každý den.</p>
     <p>Budem rádi za vyplnění krátkého dotazníku a za návrhy koho dalšího máme přidat.</p>
-    <p>Nový den nové přidání 
-      +karinkapedro 
+    <p>Nový den nové přidání
+      +karinkapedro
       +De.Athene novinky
       +kafuu novinky
       +teribalci novinky
       nebojte další videa / fotky budeme přidávat postupně </p>
-
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="300" height="600" frameborder="0" marginheight="0" marginwidth="0">Načítání…</iframe>
-</iframe>
-    
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeT4qheS5QUnzhXiq7LfkegHah8QYUK37Jc7hjXJEvfT6RPPg/viewform?embedded=true" width="300" height="600" frameborder="0" marginheight="0" marginwidth="0">Načítání…</iframe>
   </div>
-<script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
+
+  <script src="https://demolitionculpritrape.com/68/65/dc/6865dc7a977c43fd392abb7d98bced45.js"></script>
+
+  <!-- Kategorie CZ/SK -->
   <h2>CZ/SK</h2>
   <div class="gallery" id="czsk-gallery"></div>
 
+  <!-- Kategorie Worldwide -->
   <h2>Worldwide</h2>
   <div class="gallery" id="worldwide-gallery"></div>
 
-    <div class="warning" style="margin-top: 100px;"> Respektujeme všechny ❤️  
-Něco vadí nebo máš tip? Napiš anonymně: quickpic.site@proton.me</div>
+  <!-- Nová kategorie: Celebrity (anglicky) -->
+  <h2>Celebrity</h2>
+  <div class="gallery" id="celeb-gallery"></div>
+
+  <div class="warning" style="margin-top: 100px;">
+    Respektujeme všechny ❤️<br>
+    Něco vadí nebo máš tip? Napiš anonymně: <a href="mailto:quickpic.site@proton.me" style="color:#00aaff;">quickpic.site@proton.me</a>
+  </div>
 
   <script>
     fetch('postavy/list.txt')
@@ -83,22 +85,27 @@ Něco vadí nebo máš tip? Napiš anonymně: quickpic.site@proton.me</div>
         let currentSection = 'czsk';
         const czsk = [];
         const worldwide = [];
-
+        const celeb = [];
         lines.forEach(line => {
           line = line.trim();
           if (line.startsWith('# CZ/SK')) {
             currentSection = 'czsk';
           } else if (line.startsWith('# Worldwide')) {
             currentSection = 'worldwide';
+          } else if (line.startsWith('# celeb')) {
+            currentSection = 'celeb';
           } else if (line && !line.startsWith('#')) {
             if (currentSection === 'czsk') {
               czsk.push(line);
-            } else {
+            } else if (currentSection === 'worldwide') {
               worldwide.push(line);
+            } else if (currentSection === 'celeb') {
+              celeb.push(line);
             }
           }
         });
 
+        // CZ/SK galerie
         const czskGallery = document.getElementById('czsk-gallery');
         czsk.forEach(id => {
           const item = document.createElement('div');
@@ -107,12 +114,22 @@ Něco vadí nebo máš tip? Napiš anonymně: quickpic.site@proton.me</div>
           czskGallery.appendChild(item);
         });
 
+        // Worldwide galerie
         const worldwideGallery = document.getElementById('worldwide-gallery');
         worldwide.forEach(id => {
           const item = document.createElement('div');
           item.className = 'item';
           item.innerHTML = `<a href="gallery.html?id=${id}" target="_blank" rel="noopener"><div class="name">${id}</div></a>`;
           worldwideGallery.appendChild(item);
+        });
+
+        // Celebrity galerie
+        const celebGallery = document.getElementById('celeb-gallery');
+        celeb.forEach(id => {
+          const item = document.createElement('div');
+          item.className = 'item';
+          item.innerHTML = `<a href="gallery.html?id=${id}" target="_blank" rel="noopener"><div class="name">${id}</div></a>`;
+          celebGallery.appendChild(item);
         });
       });
   </script>
